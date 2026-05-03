@@ -16,7 +16,7 @@ const AboutSummary: React.FC = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={6} alignItems="center">
+        <Grid container spacing={6} sx={{ alignItems: 'center' }}>
           <Grid size={{ xs: 12, md: 6 }}>
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -39,7 +39,7 @@ const AboutSummary: React.FC = () => {
               
               <MuiButton
                 component={RouterLink}
-                to="/about-detailed"
+                to="/about"
                 variant="outlined"
                 endIcon={<ArrowForwardIcon />}
                 sx={{

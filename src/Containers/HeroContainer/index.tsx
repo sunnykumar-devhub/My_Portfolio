@@ -124,10 +124,10 @@ const Hero: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
         >
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} sx={{ justifyContent: 'center' }}>
             <MuiButton
               component={RouterLink}
-              to="/projectpage"
+              to="/projects"
               variant="contained"
               size="large"
               endIcon={<ArrowForwardIcon />}

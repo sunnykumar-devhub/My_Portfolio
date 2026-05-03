@@ -19,7 +19,7 @@ const Footer = () => {
         mt: 'auto',
       }}
     >
-      <Box maxWidth="xl" mx="auto" display="flex" flexDirection="column" alignItems="center">
+      <Box sx={{ maxWidth: 'xl', mx: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* Footer Title */}
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
           <Box 
@@ -79,16 +79,16 @@ const Footer = () => {
         </Typography>
 
         {/* Navigation Links */}
-        <Stack direction="row" spacing={{ xs: 2, md: 4 }} justifyContent="center" sx={{ mb: 4, flexWrap: 'wrap', gap: 2 }}>
+        <Stack direction="row" spacing={{ xs: 2, md: 4 }} sx={{ justifyContent: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>
           <RouterLink to="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Home</RouterLink>
-          <RouterLink to="/about-detailed" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>About</RouterLink>
-          <RouterLink to="/SkillsPage" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Skills</RouterLink>
-          <RouterLink to="/projectpage" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Projects</RouterLink>
+          <RouterLink to="/about" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>About</RouterLink>
+          <RouterLink to="/skills" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Skills</RouterLink>
+          <RouterLink to="/projects" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Projects</RouterLink>
           <RouterLink to="/contact" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Contact</RouterLink>
         </Stack>
 
         {/* Social Media Icons */}
-        <Stack direction="row" justifyContent="center" spacing={2} sx={{ mb: 4 }}>
+        <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', mb: 4 }}>
           <IconButton
             component="a"
             href="https://github.com/sunnykumar-devhub"
@@ -129,7 +129,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <Typography variant="body2" sx={{ color: '#64748b' }}>
-          Â© {new Date().getFullYear()} Sunny Kumar. All rights reserved.
+          Ã‚Â© {new Date().getFullYear()} Sunny Kumar. All rights reserved.
         </Typography>
       </Box>
     </Box>
