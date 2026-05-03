@@ -8,7 +8,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 const featuredProjects = [
   {
-    title: 'SSRStyles â€“ E-commerce Platform',
+    title: 'SSRStyles Ã¢â‚¬â€œ E-commerce Platform',
     techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT'],
     description: 'A full-stack e-commerce platform with secure JWT-based authentication. Features dynamic product listings, cart workflows, and RESTful APIs. Integrated Multer for image uploads and CryptoJS for password encryption.',
     link: 'https://github.com/sunnykumar-devhub/ssrstyles', // placeholder
@@ -94,7 +94,7 @@ const Projects: React.FC = () => {
                       {project.title}
                     </Typography>
                     
-                    <Stack direction="row" flexWrap="wrap" gap={1} mb={3}>
+                    <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1, mb: 3 }}>
                       {project.techStack.map((tech, idx) => (
                         <Chip
                           key={idx}
@@ -116,7 +116,7 @@ const Projects: React.FC = () => {
                     </Typography>
                   </Box>
 
-                  <Stack direction="row" spacing={2} mt="auto">
+                  <Stack direction="row" spacing={2} sx={{ mt: 'auto' }}>
                     <MuiButton
                       variant="contained"
                       startIcon={<GitHubIcon />}
@@ -152,10 +152,10 @@ const Projects: React.FC = () => {
           </Stack>
         </motion.div>
 
-        <Box display="flex" justifyContent="center" mt={8}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
           <MuiButton
             component={RouterLink}
-            to="/projectpage"
+            to="/projects"
             variant="outlined"
             endIcon={<ArrowForwardIcon />}
             sx={{

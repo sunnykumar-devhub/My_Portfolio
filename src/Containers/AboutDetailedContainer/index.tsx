@@ -34,14 +34,14 @@ const AboutDetailedContainer: React.FC = () => {
                 <Box sx={{ borderLeft: '2px solid rgba(0, 242, 254, 0.5)', pl: 3 }}>
                   <Typography variant="h6" sx={{ color: '#f8fafc', fontWeight: 600 }}>Bachelor of Computer Applications (BCA)</Typography>
                   <Typography variant="body1" sx={{ color: '#00f2fe', mb: 1 }}>Presidency College, Bangalore</Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>2021 – 2024</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>2021 â€“ 2024</Typography>
                 </Box>
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Box sx={{ borderLeft: '2px solid rgba(0, 242, 254, 0.5)', pl: 3 }}>
                   <Typography variant="h6" sx={{ color: '#f8fafc', fontWeight: 600 }}>Senior Secondary (12th Grade)</Typography>
                   <Typography variant="body1" sx={{ color: '#00f2fe', mb: 1 }}>DC College, Hajipur</Typography>
-                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>2019 – 2020</Typography>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>2019 â€“ 2020</Typography>
                 </Box>
               </Grid>
             </Grid>

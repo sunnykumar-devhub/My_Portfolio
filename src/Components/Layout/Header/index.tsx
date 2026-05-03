@@ -136,11 +136,13 @@ const Header: React.FC = () => {
         anchor="right" 
         open={drawerOpen} 
         onClose={toggleDrawer}
-        PaperProps={{
-          sx: {
-            backgroundColor: '#050505',
-            backgroundImage: 'none',
-            borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
+        slotProps={{
+          paper: {
+            sx: {
+              backgroundColor: '#050505',
+              backgroundImage: 'none',
+              borderLeft: '1px solid rgba(255, 255, 255, 0.08)',
+            }
           }
         }}
       >
