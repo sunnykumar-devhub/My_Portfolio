@@ -100,7 +100,7 @@ const Footer = () => {
           </IconButton>
           <IconButton
             component="a"
-            href="https://linkedin.com/in/sunnykumar91728"
+            href="https://www.linkedin.com/in/sunnykumarsde"
             target="_blank"
             rel="noopener"
             sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', transform: 'translateY(-2px)', transition: 'all 0.2s' } }}
