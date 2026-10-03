@@ -9,7 +9,7 @@ const skillCategories = [
   },
   {
     title: 'State & Data',
-    skills: ['Redux Toolkit', 'React Query', 'Context API', 'REST APIs', 'Axios', 'JSON Server']
+    skills: ['Redux Toolkit', 'React Query', 'Context API', 'REST APIs', 'Axios', 'JSON Server', 'React Hook Form', 'Formik']
   },
   {
     title: 'UI & Styling',
@@ -20,16 +20,8 @@ const skillCategories = [
     skills: ['Lazy Loading', 'Code Splitting', 'Reusable Components', 'Component-Driven Design']
   },
   {
-    title: 'Forms & State',
-    skills: ['React Hook Form', 'Formik']
-  },
-  {
     title: 'Tools & Practices',
     skills: ['Git & GitHub', 'VS Code', 'Chrome DevTools', 'NPM/Yarn', 'ESLint', 'Prettier', 'Jira', 'Agile/Scrum']
-  },
-  {
-    title: 'AI-Assisted Development',
-    skills: ['ChatGPT', 'GitHub Copilot', 'Claude', 'Gemini', 'Perplexity']
   }
 ];
 
@@ -84,7 +76,7 @@ const Skills: React.FC = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <Typography variant="h2" sx={{ fontWeight: 800, textAlign: 'center', mb: 2, className: 'text-gradient' }}>
+          <Typography variant="h2" className="text-gradient" sx={{ fontWeight: 800, textAlign: 'center', mb: 2 }}>
             Technical Arsenal
           </Typography>
           <Typography variant="body1" sx={{ color: 'text.secondary', textAlign: 'center', mb: 8, maxWidth: '600px', mx: 'auto' }}>
@@ -98,7 +90,7 @@ const Skills: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
-          <Grid container spacing={4}>
+          <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
             {skillCategories.map((category, index) => (
               <Grid size={{ xs: 12, md: 6, lg: 4 }} key={index}>
                 <motion.div variants={itemVariants} style={{ height: '100%' }}>
