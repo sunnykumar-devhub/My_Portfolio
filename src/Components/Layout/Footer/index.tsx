@@ -3,7 +3,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import XIcon from '@mui/icons-material/X';
-import { Link as RouterLink } from 'react-router-dom';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
@@ -80,11 +80,11 @@ const Footer = () => {
 
         {/* Navigation Links */}
         <Stack direction="row" spacing={{ xs: 2, md: 4 }} sx={{ justifyContent: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>
-          <RouterLink to="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Home</RouterLink>
-          <RouterLink to="/about" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>About</RouterLink>
-          <RouterLink to="/skills" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Skills</RouterLink>
-          <RouterLink to="/projects" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Projects</RouterLink>
-          <RouterLink to="/contact" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Contact</RouterLink>
+          <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Home</Link>
+          <Link href="/about" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>About</Link>
+          <Link href="/skills" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Skills</Link>
+          <Link href="/projects" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Projects</Link>
+          <Link href="/contact" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Contact</Link>
         </Stack>
 
         {/* Social Media Icons */}

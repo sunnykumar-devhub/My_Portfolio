@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
@@ -62,7 +64,7 @@ const Loader: React.FC = () => {
         <Box
           component={motion.div}
           initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ 
+          animate={{
             scale: [0.8, 1.1, 0.8],
             opacity: 1
           }}

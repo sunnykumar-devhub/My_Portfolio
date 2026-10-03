@@ -1,7 +1,10 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, IconButton, Drawer, Container, useScrollTrigger } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 const navItems = [
@@ -26,11 +29,11 @@ const Header: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 20 });
-  const location = useLocation();
+  const pathname = usePathname();
 
   // On the home page, highlight the nav item for the section crossing the middle of the viewport
   useEffect(() => {
-    if (location.pathname !== '/') return;
+    if (pathname !== '/') return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -47,9 +50,9 @@ const Header: React.FC = () => {
     });
 
     return () => observer.disconnect();
-  }, [location.pathname]);
+  }, [pathname]);
 
-  const activePath = location.pathname === '/' ? sectionToPath[activeSection] : location.pathname;
+  const activePath = pathname === '/' ? sectionToPath[activeSection] : pathname;
 
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
@@ -71,8 +74,8 @@ const Header: React.FC = () => {
           <Toolbar sx={{ justifyContent: 'space-between', height: 80 }}>
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
               <Box 
-                component={RouterLink} 
-                to="/"
+                component={Link} 
+                href="/"
                 sx={{ 
                   display: 'flex', 
                   alignItems: 'center', 
@@ -141,8 +144,8 @@ const Header: React.FC = () => {
               {navItems.map((item, index) => (
                 <motion.div key={item.label} initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }}>
                   <Button 
-                    component={RouterLink} 
-                    to={item.path}
+                    component={Link} 
+                    href={item.path}
                     aria-current={activePath === item.path ? 'page' : undefined}
                     sx={{
                       color: activePath === item.path ? '#00f2fe' : 'text.secondary',
@@ -194,8 +197,8 @@ const Header: React.FC = () => {
               key={item.label}
               fullWidth 
               onClick={toggleDrawer} 
-              component={RouterLink} 
-              to={item.path}
+              component={Link} 
+              href={item.path}
               aria-current={activePath === item.path ? 'page' : undefined}
               sx={{
                 justifyContent: 'flex-start',

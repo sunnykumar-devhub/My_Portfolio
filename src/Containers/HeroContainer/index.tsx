@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 import { Box, Container, Typography, Stack, Button as MuiButton } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Link as RouterLink } from 'react-router-dom';
+import Link from 'next/link';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DownloadIcon from '@mui/icons-material/Download';
 import { RESUME_URL } from '../../config/site';
@@ -126,8 +128,8 @@ const Hero: React.FC = () => {
         >
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} sx={{ justifyContent: 'center' }}>
             <MuiButton
-              component={RouterLink}
-              to="/projects"
+              component={Link}
+              href="/projects"
               variant="contained"
               size="large"
               endIcon={<ArrowForwardIcon />}
