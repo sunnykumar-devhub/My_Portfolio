@@ -1,6 +1,8 @@
+'use client';
+
 import React from 'react';
 import { Box, Container, Typography, Button as MuiButton } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
+import Link from 'next/link';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const NotFound: React.FC = () => {
@@ -20,8 +22,8 @@ const NotFound: React.FC = () => {
           The page you're looking for doesn't exist or has been moved.
         </Typography>
         <MuiButton
-          component={RouterLink}
-          to="/"
+          component={Link}
+          href="/"
           variant="contained"
           startIcon={<ArrowBackIcon />}
           sx={{

@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 import { Box, Container, Typography, Grid, Paper } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Link as RouterLink } from 'react-router-dom';
+import Link from 'next/link';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Button as MuiButton } from '@mui/material';
 
@@ -38,8 +40,8 @@ const AboutSummary: React.FC = () => {
               </Typography>
               
               <MuiButton
-                component={RouterLink}
-                to="/about"
+                component={Link}
+                href="/about"
                 variant="outlined"
                 endIcon={<ArrowForwardIcon />}
                 sx={{

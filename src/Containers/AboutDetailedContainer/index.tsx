@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 import { Box, Container, Typography, Grid, Paper, Button as MuiButton } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Link as RouterLink } from 'react-router-dom';
+import Link from 'next/link';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const AboutDetailedContainer: React.FC = () => {
@@ -11,8 +13,8 @@ const AboutDetailedContainer: React.FC = () => {
         
         <Box sx={{ mb: 6 }}>
           <MuiButton
-            component={RouterLink}
-            to="/"
+            component={Link}
+            href="/"
             startIcon={<ArrowBackIcon />}
             sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', background: 'transparent' } }}
           >

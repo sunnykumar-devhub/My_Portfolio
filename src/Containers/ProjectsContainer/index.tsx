@@ -1,10 +1,13 @@
+'use client';
+
 import React from 'react';
 import { Box, Container, Typography, Paper, Stack, Chip, Button as MuiButton } from '@mui/material';
 import { motion } from 'framer-motion';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 type Project = {
   title: string;
@@ -50,7 +53,7 @@ const itemVariants = {
 };
 
 const Projects: React.FC = () => {
-  const { pathname } = useLocation();
+  const pathname = usePathname();
 
   return (
     <Box
@@ -186,8 +189,8 @@ const Projects: React.FC = () => {
         {pathname !== '/projects' && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
           <MuiButton
-            component={RouterLink}
-            to="/projects"
+            component={Link}
+            href="/projects"
             variant="outlined"
             endIcon={<ArrowForwardIcon />}
             sx={{
