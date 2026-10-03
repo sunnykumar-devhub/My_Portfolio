@@ -19,7 +19,7 @@ const Experience: React.FC = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <Typography variant="h2" sx={{ fontWeight: 800, textAlign: 'center', mb: 8, className: 'text-gradient' }}>
+          <Typography variant="h2" className="text-gradient" sx={{ fontWeight: 800, textAlign: 'center', mb: 8 }}>
             Experience
           </Typography>
         </motion.div>

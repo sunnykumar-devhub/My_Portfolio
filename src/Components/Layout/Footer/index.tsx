@@ -2,7 +2,7 @@ import { Box, Typography, Stack, IconButton, Divider } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
-import TwitterIcon from '@mui/icons-material/Twitter';
+import XIcon from '@mui/icons-material/X';
 import { Link as RouterLink } from 'react-router-dom';
 
 const Footer = () => {
@@ -93,7 +93,8 @@ const Footer = () => {
             component="a"
             href="https://github.com/sunnykumar-devhub"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
+            aria-label="GitHub"
             sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', transform: 'translateY(-2px)', transition: 'all 0.2s' } }}
           >
             <GitHubIcon />
@@ -102,23 +103,26 @@ const Footer = () => {
             component="a"
             href="https://www.linkedin.com/in/sunnykumarsde"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
             sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', transform: 'translateY(-2px)', transition: 'all 0.2s' } }}
           >
             <LinkedInIcon />
           </IconButton>
           <IconButton
             component="a"
-            href="https://twitter.com/sunnykumar_17"
+            href="https://x.com/sunnykumar_17"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
+            aria-label="X (formerly Twitter)"
             sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', transform: 'translateY(-2px)', transition: 'all 0.2s' } }}
           >
-            <TwitterIcon />
+            <XIcon />
           </IconButton>
           <IconButton
             component="a"
             href="mailto:sunnykumar91728@gmail.com"
+            aria-label="Email"
             sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', transform: 'translateY(-2px)', transition: 'all 0.2s' } }}
           >
             <EmailIcon />
@@ -129,7 +133,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <Typography variant="body2" sx={{ color: '#64748b' }}>
-          Ã‚Â© {new Date().getFullYear()} Sunny Kumar. All rights reserved.
+          {'\u00A9'} {new Date().getFullYear()} Sunny Kumar. All rights reserved.
         </Typography>
       </Box>
     </Box>

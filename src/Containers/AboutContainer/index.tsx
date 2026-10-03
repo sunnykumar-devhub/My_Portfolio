@@ -24,7 +24,7 @@ const AboutSummary: React.FC = () => {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6 }}
             >
-              <Typography variant="h2" sx={{ fontWeight: 800, mb: 2, className: 'text-gradient' }}>
+              <Typography variant="h2" className="text-gradient" sx={{ fontWeight: 800, mb: 2 }}>
                 About Me
               </Typography>
               <Typography variant="h5" sx={{ color: 'text.primary', fontWeight: 600, mb: 3 }}>
@@ -66,28 +66,29 @@ const AboutSummary: React.FC = () => {
               viewport={{ once: true, margin: "-100px" }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <Box sx={{ display: 'grid', gap: 3, gridTemplateColumns: 'repeat(2, 1fr)' }}>
+              <Box sx={{ display: 'grid', gap: { xs: 2, sm: 3 }, gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
                 {[
-                  { number: '1+', label: 'Years Experience' },
+                  { number: '2+', label: 'Years Experience' },
                   { number: '10+', label: 'Projects Built' },
-                  { number: '3', label: 'Frontend Frameworks' },
-                  { number: '100%', label: 'Commitment' }
+                  { number: 'SDE-1', label: 'Promoted from Intern' },
+                  { number: '4', label: 'Certifications' }
                 ].map((stat, idx) => (
                   <Paper 
                     key={idx}
                     className="glass"
                     sx={{ 
-                      p: 4, 
+                      p: { xs: 2.5, sm: 4 }, 
+                      minWidth: 0,
                       textAlign: 'center',
                       borderRadius: '16px',
                       transition: 'transform 0.3s ease',
                       '&:hover': { transform: 'translateY(-5px)' }
                     }}
                   >
-                    <Typography variant="h3" sx={{ fontWeight: 800, color: '#f8fafc', mb: 1 }}>
+                    <Typography variant="h3" sx={{ fontWeight: 800, color: '#f8fafc', mb: 1, fontSize: { xs: '2rem', sm: '3rem' } }}>
                       {stat.number}
                     </Typography>
-                    <Typography variant="body2" sx={{ color: '#00f2fe', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <Typography variant="body2" sx={{ color: '#00f2fe', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', overflowWrap: 'anywhere', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
                       {stat.label}
                     </Typography>
                   </Paper>

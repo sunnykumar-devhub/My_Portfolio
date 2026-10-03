@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, IconButton, Drawer, Container, useScrollTrigger } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
@@ -6,16 +6,50 @@ import { motion } from 'framer-motion';
 
 const navItems = [
   { label: 'Home', path: '/' },
-  { label: 'About', path: '/about-detailed' },
-  { label: 'Projects', path: '/projectpage' },
-  { label: 'Skills', path: '/SkillsPage' },
+  { label: 'About', path: '/about' },
+  { label: 'Projects', path: '/projects' },
+  { label: 'Skills', path: '/skills' },
   { label: 'Contact', path: '/contact' },
 ];
 
+// Home page sections and the nav item each one highlights
+const sectionToPath: Record<string, string> = {
+  hero: '/',
+  about: '/about',
+  experience: '/about',
+  projects: '/projects',
+  skills: '/skills',
+  contact: '/contact',
+};
+
 const Header: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
   const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 20 });
   const location = useLocation();
+
+  // On the home page, highlight the nav item for the section crossing the middle of the viewport
+  useEffect(() => {
+    if (location.pathname !== '/') return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+
+    Object.keys(sectionToPath).forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [location.pathname]);
+
+  const activePath = location.pathname === '/' ? sectionToPath[activeSection] : location.pathname;
 
   const toggleDrawer = () => setDrawerOpen(!drawerOpen);
 
@@ -25,8 +59,10 @@ const Header: React.FC = () => {
         position="fixed"
         elevation={0}
         sx={{
-          backgroundColor: trigger ? 'rgba(5, 5, 5, 0.8)' : 'transparent',
-          backdropFilter: trigger ? 'blur(16px)' : 'none',
+          // Always opaque enough that scrolled content never shows through the nav
+          backgroundColor: trigger ? 'rgba(5, 5, 5, 0.85)' : 'rgba(5, 5, 5, 0.75)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
           borderBottom: trigger ? '1px solid rgba(255, 255, 255, 0.08)' : '1px solid transparent',
           transition: 'all 0.3s ease-in-out',
         }}
@@ -107,8 +143,9 @@ const Header: React.FC = () => {
                   <Button 
                     component={RouterLink} 
                     to={item.path}
+                    aria-current={activePath === item.path ? 'page' : undefined}
                     sx={{
-                      color: location.pathname === item.path ? '#00f2fe' : 'text.secondary',
+                      color: activePath === item.path ? '#00f2fe' : 'text.secondary',
                       fontWeight: 600,
                       px: 2,
                       '&:hover': {
@@ -124,7 +161,12 @@ const Header: React.FC = () => {
             </Box>
 
             {/* Mobile Menu Button */}
-            <IconButton sx={{ display: { xs: 'block', md: 'none' }, color: 'text.primary' }} onClick={toggleDrawer}>
+            <IconButton
+              aria-label="Open navigation menu"
+              aria-expanded={drawerOpen}
+              sx={{ display: { xs: 'block', md: 'none' }, color: 'text.primary' }}
+              onClick={toggleDrawer}
+            >
               <MenuIcon />
             </IconButton>
           </Toolbar>
@@ -154,9 +196,10 @@ const Header: React.FC = () => {
               onClick={toggleDrawer} 
               component={RouterLink} 
               to={item.path}
+              aria-current={activePath === item.path ? 'page' : undefined}
               sx={{
                 justifyContent: 'flex-start',
-                color: location.pathname === item.path ? '#00f2fe' : 'text.secondary',
+                color: activePath === item.path ? '#00f2fe' : 'text.secondary',
                 fontSize: '1.1rem',
                 py: 1.5,
               }}

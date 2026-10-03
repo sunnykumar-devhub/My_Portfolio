@@ -4,22 +4,31 @@ import { motion } from 'framer-motion';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
-const featuredProjects = [
+type Project = {
+  title: string;
+  techStack: string[];
+  description: string;
+  link: string;
+  // Optional: deployed URL. The "Live Demo" button is hidden until this is set.
+  demoLink?: string;
+  // Optional: screenshot placed in /public, e.g. '/projects/ssrstyles.png'
+  image?: string;
+};
+
+const featuredProjects: Project[] = [
   {
-    title: 'SSRStyles Ã¢â‚¬â€œ E-commerce Platform',
-    techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT'],
-    description: 'A full-stack e-commerce platform with secure JWT-based authentication. Features dynamic product listings, cart workflows, and RESTful APIs. Integrated Multer for image uploads and CryptoJS for password encryption.',
-    link: 'https://github.com/sunnykumar-devhub/ssrstyles', // placeholder
-    demoLink: '#',
+    title: 'SSRStyles \u2013 E-commerce Platform',
+    techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Multer'],
+    description: 'A full-stack e-commerce platform with JWT-based authentication, dynamic product listings, cart workflows and RESTful APIs built on Express and MongoDB. Integrated Multer for product image uploads.',
+    link: 'https://github.com/sunnykumar-devhub/SSRStyles',
   },
   {
     title: 'Task Tracker Web Application',
-    techStack: ['React.js', 'Tailwind CSS', 'React DnD', 'JSON Server'],
-    description: 'Role-based dashboards for Managers and Developers. Implemented drag-and-drop task workflows using React DnD. Built authentication flows and responsive UI with Tailwind CSS.',
-    link: 'https://github.com/sunnykumar-devhub/task-tracker', // placeholder
-    demoLink: '#',
+    techStack: ['React.js', 'Redux Toolkit', 'React DnD', 'React Hook Form', 'Chart.js', 'JSON Server'],
+    description: 'Role-based dashboards for Managers and Developers. Implemented drag-and-drop task workflows using React DnD, form handling with React Hook Form, and progress charts with Chart.js.',
+    link: 'https://github.com/sunnykumar-devhub/TaskTracker',
   }
 ];
 
@@ -41,6 +50,8 @@ const itemVariants = {
 };
 
 const Projects: React.FC = () => {
+  const { pathname } = useLocation();
+
   return (
     <Box
       id="projects"
@@ -57,7 +68,7 @@ const Projects: React.FC = () => {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
         >
-          <Typography variant="h2" sx={{ fontWeight: 800, textAlign: 'center', mb: 2, className: 'text-gradient' }}>
+          <Typography variant="h2" className="text-gradient" sx={{ fontWeight: 800, textAlign: 'center', mb: 2 }}>
             Featured Work
           </Typography>
           <Typography variant="body1" sx={{ color: 'text.secondary', textAlign: 'center', mb: 8, maxWidth: '600px', mx: 'auto' }}>
@@ -89,6 +100,22 @@ const Projects: React.FC = () => {
                     }
                   }}
                 >
+                  {project.image && (
+                    <Box
+                      component="img"
+                      src={project.image}
+                      alt={`${project.title} screenshot`}
+                      loading="lazy"
+                      sx={{
+                        width: '100%',
+                        aspectRatio: '16 / 9',
+                        objectFit: 'cover',
+                        borderRadius: '16px',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        mb: 4,
+                      }}
+                    />
+                  )}
                   <Box sx={{ mb: 3 }}>
                     <Typography variant="h4" sx={{ color: '#f8fafc', fontWeight: 800, mb: 2 }}>
                       {project.title}
@@ -122,6 +149,7 @@ const Projects: React.FC = () => {
                       startIcon={<GitHubIcon />}
                       href={project.link}
                       target="_blank"
+                      rel="noopener noreferrer"
                       sx={{
                         backgroundColor: '#f8fafc',
                         color: '#050505',
@@ -131,11 +159,13 @@ const Projects: React.FC = () => {
                     >
                       View Code
                     </MuiButton>
+                    {project.demoLink && (
                     <MuiButton
                       variant="outlined"
                       startIcon={<OpenInNewIcon />}
                       href={project.demoLink}
                       target="_blank"
+                      rel="noopener noreferrer"
                       sx={{
                         color: '#f8fafc',
                         borderColor: 'rgba(255,255,255,0.2)',
@@ -145,6 +175,7 @@ const Projects: React.FC = () => {
                     >
                       Live Demo
                     </MuiButton>
+                    )}
                   </Stack>
                 </Paper>
               </motion.div>
@@ -152,6 +183,7 @@ const Projects: React.FC = () => {
           </Stack>
         </motion.div>
 
+        {pathname !== '/projects' && (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
           <MuiButton
             component={RouterLink}
@@ -174,6 +206,7 @@ const Projects: React.FC = () => {
             View All Projects
           </MuiButton>
         </Box>
+        )}
       </Container>
     </Box>
   );

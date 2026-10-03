@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import SendIcon from '@mui/icons-material/Send';
+import { CONTACT_EMAIL, WEB3FORMS_KEY } from '../../config/site';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -20,17 +21,53 @@ const Contact = () => {
   });
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+  const [sending, setSending] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSnackbarMessage('Thank you for reaching out! I will get back to you soon.');
+  const notify = (message: string, severity: 'success' | 'error') => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
     setOpenSnackbar(true);
-    setFormData({ name: '', email: '', message: '' });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // No form service configured yet: hand off to the visitor's mail client so the message still reaches me
+    if (!WEB3FORMS_KEY) {
+      const subject = encodeURIComponent(`Portfolio message from ${formData.name}`);
+      const body = encodeURIComponent(`${formData.message}\n\n${formData.name} (${formData.email})`);
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+      return;
+    }
+
+    setSending(true);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `Portfolio message from ${formData.name}`,
+          from_name: formData.name,
+          ...formData,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Request failed');
+
+      notify('Thank you for reaching out! I will get back to you soon.', 'success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch {
+      notify(`Sorry, your message could not be sent. Please email me at ${CONTACT_EMAIL}.`, 'error');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -74,10 +111,10 @@ const Contact = () => {
           >
             <Typography
               variant="h3"
+              className="text-gradient"
               sx={{
                 fontWeight: 800,
                 mb: 2,
-                className: 'text-gradient'
               }}
             >
               Let's Connect
@@ -156,6 +193,7 @@ const Contact = () => {
                 size="large"
                 endIcon={<SendIcon />}
                 fullWidth
+                disabled={sending}
                 sx={{
                   background: 'linear-gradient(to right, #00f2fe, #4facfe)',
                   color: '#000',
@@ -169,7 +207,7 @@ const Contact = () => {
                   }
                 }}
               >
-                Send Message
+                {sending ? 'Sending...' : 'Send Message'}
               </Button>
             </form>
           </Paper>
@@ -183,9 +221,13 @@ const Contact = () => {
         >
           <Alert
             onClose={() => setOpenSnackbar(false)}
-            severity="success"
+            severity={snackbarSeverity}
             variant="filled"
-            sx={{ width: '100%', backgroundColor: '#00f2fe', color: '#000', fontWeight: 600 }}
+            sx={{
+              width: '100%',
+              fontWeight: 600,
+              ...(snackbarSeverity === 'success' && { backgroundColor: '#00f2fe', color: '#000' }),
+            }}
           >
             {snackbarMessage}
           </Alert>

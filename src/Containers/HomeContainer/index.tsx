@@ -1,31 +1,20 @@
 import Hero from '../HeroContainer';
-import About from '../AboutContainer'; 
+import About from '../AboutContainer';
 import Experience from '../ExperienceContainer';
 import Projects from '../ProjectsContainer';
 import Skills from '../SkillsContainer';
 import Contact from '../ContactContainer';
 
+// Each section sets its own id (hero, about, experience, ...), so no wrapper ids here
 const HomeContainer: React.FC = () => {
   return (
     <>
-      <div id="hero">
-        <Hero />
-      </div>
-      <div id="about">
-        <About />
-      </div>
-      <div id="experience">
-        <Experience />
-      </div>
-      <div id="projects">
-        <Projects />
-      </div>
-      <div id="skills">
-        <Skills />
-      </div>
-      <div id="contact">
-        <Contact />
-      </div>
+      <Hero />
+      <About />
+      <Experience />
+      <Projects />
+      <Skills />
+      <Contact />
     </>
   );
 };

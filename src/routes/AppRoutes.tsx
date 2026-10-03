@@ -9,6 +9,7 @@ const AboutDetailed = lazy(() => import('../Pages/About'));
 const ProjectPage = lazy(() => import('../Pages/Project'));
 const SkillsPage = lazy(() => import('../Pages/Skills'));
 const Contact = lazy(() => import('../Pages/Contact'));
+const NotFound = lazy(() => import('../Pages/NotFound'));
 
 const AppRoutes: React.FC = () => {
   return (
@@ -19,6 +20,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/projects" element={<Layout><ProjectPage /></Layout>} />
         <Route path="/skills" element={<Layout><SkillsPage /></Layout>} />
         <Route path="/contact" element={<Layout><Contact /></Layout>} />
+        <Route path="*" element={<Layout><NotFound /></Layout>} />
       </Routes>
     </Suspense>
   );

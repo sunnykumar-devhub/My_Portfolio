@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Link as RouterLink } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DownloadIcon from '@mui/icons-material/Download';
+import { RESUME_URL } from '../../config/site';
 
 const Hero: React.FC = () => {
   return (
@@ -114,8 +115,7 @@ const Hero: React.FC = () => {
               lineHeight: 1.8,
             }}
           >
-            I build highly scalable, production-ready web applications using React.js, Next.js, and TypeScript.
-            Currently shaping the future of digital experiences at Codebucket Solutions.
+            Frontend engineer building fast, role-based web apps with React, Next.js &amp; TypeScript at Codebucket Solutions.
           </Typography>
         </motion.div>
 
@@ -148,11 +148,13 @@ const Hero: React.FC = () => {
               View My Work
             </MuiButton>
 
+            {RESUME_URL && (
             <MuiButton
               variant="outlined"
               size="large"
               startIcon={<DownloadIcon />}
-              href="#" // Replace with actual resume link later
+              href={RESUME_URL}
+              download
               sx={{
                 color: '#f8fafc',
                 borderColor: 'rgba(255,255,255,0.2)',
@@ -170,6 +172,7 @@ const Hero: React.FC = () => {
             >
               Download Resume
             </MuiButton>
+            )}
           </Stack>
         </motion.div>
       </Container>
