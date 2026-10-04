@@ -24,9 +24,6 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   authors: [{ name: 'Sunny Kumar' }],
   alternates: { canonical: '/' },
-  icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%2334d399'/><stop offset='1' stop-color='%2360a5fa'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='%2307090d'/><text x='50' y='67' font-family='monospace' font-weight='700' font-size='46' fill='url(%23g)' text-anchor='middle'>SK</text></svg>",
-  },
   openGraph: {
     type: 'website',
     siteName: 'Sunny Kumar',
