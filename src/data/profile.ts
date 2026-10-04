@@ -180,9 +180,9 @@ export const personalProjects: Project[] = [
     title: 'Task Tracker',
     category: 'Personal · Frontend',
     description:
-      'Role-based task tracker for managers and developers with drag-and-drop workflows, React Hook Form and progress charts.',
+      'Role-based task tracker with Admin and Developer dashboards, a drag-and-drop task board and progress charts.',
     highlights: [],
-    stack: ['React.js', 'Redux Toolkit', 'React DnD', 'React Hook Form', 'Chart.js'],
+    stack: ['React.js', 'Redux Toolkit', 'React DnD', 'Chart.js', 'JSON Server'],
     code: 'https://github.com/sunnykumar-devhub/TaskTracker',
   },
 ];
