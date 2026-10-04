@@ -1,217 +1,203 @@
 'use client';
 
 import React from 'react';
-import { Box, Container, Typography, Paper, Stack, Chip, Button as MuiButton } from '@mui/material';
-import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { Box, Typography, Button, Stack } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import CheckIcon from '@mui/icons-material/Check';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Section from '../../Components/Common/Section';
+import SectionHeading from '../../Components/Common/SectionHeading';
+import Reveal from '../../Components/Common/Reveal';
+import TechChip from '../../Components/Common/TechChip';
+import { moreWork, personalProjects, workProjects, type Project } from '../../data/profile';
+import { colors } from '../../theme';
 
-type Project = {
-  title: string;
-  techStack: string[];
-  description: string;
-  link: string;
-  // Optional: deployed URL. The "Live Demo" button is hidden until this is set.
-  demoLink?: string;
-  // Optional: screenshot placed in /public, e.g. '/projects/ssrstyles.png'
-  image?: string;
-};
-
-const featuredProjects: Project[] = [
-  {
-    title: 'SSRStyles \u2013 E-commerce Platform',
-    techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Multer'],
-    description: 'A full-stack e-commerce platform with JWT-based authentication, dynamic product listings, cart workflows and RESTful APIs built on Express and MongoDB. Integrated Multer for product image uploads.',
-    link: 'https://github.com/sunnykumar-devhub/SSRStyles',
-  },
-  {
-    title: 'Task Tracker Web Application',
-    techStack: ['React.js', 'Redux Toolkit', 'React DnD', 'React Hook Form', 'Chart.js', 'JSON Server'],
-    description: 'Role-based dashboards for Managers and Developers. Implemented drag-and-drop task workflows using React DnD, form handling with React Hook Form, and progress charts with Chart.js.',
-    link: 'https://github.com/sunnykumar-devhub/TaskTracker',
+const ProjectLinks: React.FC<{ project: Project }> = ({ project }) => {
+  if (!project.code && !project.live) {
+    return (
+      <Stack direction="row" spacing={0.75} sx={{ alignItems: 'center', color: colors.subtle }}>
+        <LockOutlinedIcon sx={{ fontSize: 15 }} />
+        <Typography className="mono" sx={{ fontSize: '0.75rem' }}>
+          Company project · private codebase
+        </Typography>
+      </Stack>
+    );
   }
-];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 }
-  }
-};
-
-const itemVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { type: 'spring' as const, stiffness: 100 }
-  }
-};
-
-const Projects: React.FC = () => {
-  const pathname = usePathname();
-
   return (
-    <Box
-      id="projects"
-      sx={{
-        py: { xs: 8, md: 12 },
-        backgroundColor: '#0a0a0a',
-        position: 'relative',
-      }}
-    >
-      <Container maxWidth="lg">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-        >
-          <Typography variant="h2" className="text-gradient" sx={{ fontWeight: 800, textAlign: 'center', mb: 2 }}>
-            Featured Work
-          </Typography>
-          <Typography variant="body1" sx={{ color: 'text.secondary', textAlign: 'center', mb: 8, maxWidth: '600px', mx: 'auto' }}>
-            A selection of complex applications I've built, showcasing my expertise in modern frontend frameworks and full-stack integration.
-          </Typography>
-        </motion.div>
+    <Stack direction="row" spacing={1}>
+      {project.code && (
+        <Button size="small" variant="outlined" startIcon={<GitHubIcon />} href={project.code} target="_blank" rel="noopener noreferrer">
+          Code
+        </Button>
+      )}
+      {project.live && (
+        <Button size="small" variant="outlined" startIcon={<OpenInNewIcon />} href={project.live} target="_blank" rel="noopener noreferrer">
+          Live site
+        </Button>
+      )}
+    </Stack>
+  );
+};
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          <Stack spacing={6}>
-            {featuredProjects.map((project, index) => (
-              <motion.div key={index} variants={itemVariants}>
-                <Paper 
-                  className="glass"
-                  sx={{ 
-                    p: { xs: 4, md: 6 }, 
-                    borderRadius: '24px',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    transition: 'transform 0.3s ease',
-                    '&:hover': {
-                      transform: 'translateY(-5px)',
-                    }
-                  }}
-                >
-                  {project.image && (
-                    <Box
-                      component="img"
-                      src={project.image}
-                      alt={`${project.title} screenshot`}
-                      loading="lazy"
-                      sx={{
-                        width: '100%',
-                        aspectRatio: '16 / 9',
-                        objectFit: 'cover',
-                        borderRadius: '16px',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        mb: 4,
-                      }}
-                    />
-                  )}
-                  <Box sx={{ mb: 3 }}>
-                    <Typography variant="h4" sx={{ color: '#f8fafc', fontWeight: 800, mb: 2 }}>
-                      {project.title}
-                    </Typography>
-                    
-                    <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1, mb: 3 }}>
-                      {project.techStack.map((tech, idx) => (
-                        <Chip
-                          key={idx}
-                          label={tech}
-                          size="small"
-                          sx={{
-                            backgroundColor: 'rgba(0, 242, 254, 0.1)',
-                            color: '#00f2fe',
-                            fontWeight: 600,
-                            borderRadius: '6px',
-                            border: '1px solid rgba(0, 242, 254, 0.2)'
-                          }}
-                        />
-                      ))}
-                    </Stack>
+const FeaturedCard: React.FC<{ project: Project; index: number }> = ({ project, index }) => (
+  <Box
+    sx={{
+      position: 'relative',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      p: { xs: 3, md: 4 },
+      borderRadius: '20px',
+      border: `1px solid ${colors.border}`,
+      backgroundColor: colors.surface,
+      overflow: 'hidden',
+      transition: 'border-color .25s, transform .25s',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '2px',
+        background: colors.gradient,
+        opacity: 0,
+        transition: 'opacity .25s',
+      },
+      '&:hover': { borderColor: colors.borderStrong, transform: 'translateY(-4px)' },
+      '&:hover::before': { opacity: 1 },
+    }}
+  >
+    <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 2.5 }}>
+      <Typography
+        className="mono"
+        sx={{
+          fontSize: '0.75rem',
+          color: colors.emerald,
+          px: 1.25,
+          py: 0.5,
+          borderRadius: '6px',
+          backgroundColor: 'rgba(52, 211, 153, 0.08)',
+          border: '1px solid rgba(52, 211, 153, 0.2)',
+        }}
+      >
+        {project.category}
+      </Typography>
+      <Typography className="mono" sx={{ fontSize: '0.8rem', color: colors.subtle }}>
+        {String(index + 1).padStart(2, '0')}
+      </Typography>
+    </Stack>
 
-                    <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.8, fontSize: '1.1rem', mb: 4 }}>
-                      {project.description}
-                    </Typography>
-                  </Box>
+    <Typography variant="h4" sx={{ fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 1.5 }}>
+      {project.title}
+    </Typography>
+    <Typography sx={{ color: colors.muted, lineHeight: 1.75, mb: 2.5 }}>{project.description}</Typography>
 
-                  <Stack direction="row" spacing={2} sx={{ mt: 'auto' }}>
-                    <MuiButton
-                      variant="contained"
-                      startIcon={<GitHubIcon />}
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      sx={{
-                        backgroundColor: '#f8fafc',
-                        color: '#050505',
-                        fontWeight: 600,
-                        '&:hover': { backgroundColor: '#cbd5e1' }
-                      }}
-                    >
-                      View Code
-                    </MuiButton>
-                    {project.demoLink && (
-                    <MuiButton
-                      variant="outlined"
-                      startIcon={<OpenInNewIcon />}
-                      href={project.demoLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      sx={{
-                        color: '#f8fafc',
-                        borderColor: 'rgba(255,255,255,0.2)',
-                        fontWeight: 600,
-                        '&:hover': { borderColor: '#f8fafc', backgroundColor: 'rgba(255,255,255,0.05)' }
-                      }}
-                    >
-                      Live Demo
-                    </MuiButton>
-                    )}
-                  </Stack>
-                </Paper>
-              </motion.div>
-            ))}
-          </Stack>
-        </motion.div>
+    {project.highlights.length > 0 && (
+      <Box component="ul" sx={{ listStyle: 'none', display: 'grid', gap: 1, mb: 3 }}>
+        {project.highlights.map((h) => (
+          <Box component="li" key={h} sx={{ display: 'flex', gap: 1.25, alignItems: 'flex-start', fontSize: '0.95rem' }}>
+            <CheckIcon sx={{ fontSize: 18, mt: '3px', color: colors.emerald }} />
+            <span>{h}</span>
+          </Box>
+        ))}
+      </Box>
+    )}
 
-        {pathname !== '/projects' && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 8 }}>
-          <MuiButton
-            component={Link}
-            href="/projects"
-            variant="outlined"
-            endIcon={<ArrowForwardIcon />}
-            sx={{
-              color: '#00f2fe',
-              borderColor: 'rgba(0, 242, 254, 0.5)',
-              px: 4,
-              py: 1.5,
-              fontSize: '1.1rem',
-              borderRadius: '8px',
-              '&:hover': {
-                borderColor: '#00f2fe',
-                background: 'rgba(0, 242, 254, 0.05)'
-              }
-            }}
-          >
-            View All Projects
-          </MuiButton>
-        </Box>
-        )}
-      </Container>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 3, mt: 'auto' }}>
+      {project.stack.map((t) => (
+        <TechChip key={t} label={t} />
+      ))}
     </Box>
+
+    <Box sx={{ pt: 2.5, borderTop: `1px solid ${colors.border}` }}>
+      <ProjectLinks project={project} />
+    </Box>
+  </Box>
+);
+
+const CompactCard: React.FC<{ project: Project }> = ({ project }) => (
+  <Box
+    sx={{
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      p: 3,
+      borderRadius: '16px',
+      border: `1px solid ${colors.border}`,
+      backgroundColor: colors.surface,
+      transition: 'border-color .25s',
+      '&:hover': { borderColor: colors.borderStrong },
+    }}
+  >
+    <Typography className="mono" sx={{ fontSize: '0.75rem', color: colors.sky, mb: 1 }}>
+      {project.category}
+    </Typography>
+    <Typography variant="h6" sx={{ mb: 1 }}>
+      {project.title}
+    </Typography>
+    <Typography sx={{ color: colors.muted, fontSize: '0.93rem', lineHeight: 1.7, mb: 2 }}>{project.description}</Typography>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 2.5, mt: 'auto' }}>
+      {project.stack.map((t) => (
+        <TechChip key={t} label={t} />
+      ))}
+    </Box>
+    <ProjectLinks project={project} />
+  </Box>
+);
+
+const Projects: React.FC<{ full?: boolean }> = ({ full = false }) => {
+  return (
+    <Section id="projects">
+      <SectionHeading
+        index="03"
+        eyebrow="work"
+        title="Production apps I've built"
+        subtitle="Enterprise applications I've delivered frontend features for at Codebucket, used by real brands, schools, government boards and citizens."
+      />
+
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+        {workProjects.map((p, i) => (
+          <Reveal key={p.title} delay={(i % 2) * 0.1} style={{ height: '100%' }}>
+            <FeaturedCard project={p} index={i} />
+          </Reveal>
+        ))}
+      </Box>
+
+      {full ? (
+        <>
+          <Typography variant="h5" sx={{ mt: 10, mb: 3 }}>
+            More work at Codebucket
+          </Typography>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+            {moreWork.map((p) => (
+              <Reveal key={p.title} style={{ height: '100%' }}>
+                <CompactCard project={p} />
+              </Reveal>
+            ))}
+          </Box>
+
+          <Typography variant="h5" sx={{ mt: 8, mb: 3 }}>
+            Personal projects
+          </Typography>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+            {personalProjects.map((p) => (
+              <Reveal key={p.title} style={{ height: '100%' }}>
+                <CompactCard project={p} />
+              </Reveal>
+            ))}
+          </Box>
+        </>
+      ) : (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+          <Button component={Link} href="/projects" variant="outlined" size="large" endIcon={<ArrowForwardIcon />}>
+            See all projects
+          </Button>
+        </Box>
+      )}
+    </Section>
   );
 };
 

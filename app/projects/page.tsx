@@ -3,12 +3,12 @@ import ProjectsContainer from '../../src/Containers/ProjectsContainer';
 
 export const metadata: Metadata = {
   title: 'Projects',
-  description: 'A selection of full-stack and frontend applications built by Sunny Kumar with React, Node.js and TypeScript.',
+  description: 'Production apps built by Sunny Kumar: an influencer marketing SaaS, an LMS and government portals, plus personal projects.',
   alternates: { canonical: '/projects' },
 };
 
 const ProjectsPage = () => {
-  return <ProjectsContainer />;
+  return <ProjectsContainer full />;
 };
 
 export default ProjectsPage;

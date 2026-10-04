@@ -1,141 +1,83 @@
-import { Box, Typography, Stack, IconButton, Divider } from '@mui/material';
+'use client';
+
+import { Box, Container, Typography, Stack, IconButton } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from '@mui/icons-material/EmailOutlined';
 import XIcon from '@mui/icons-material/X';
 import Link from 'next/link';
+import Logo from '../../Common/Logo';
+import { profile } from '../../../data/profile';
+import { colors } from '../../../theme';
+
+const links = [
+  { label: 'About', href: '/about' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Skills', href: '/skills' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const socials = [
+  { label: 'GitHub', href: profile.socials.github, icon: <GitHubIcon fontSize="small" /> },
+  { label: 'LinkedIn', href: profile.socials.linkedin, icon: <LinkedInIcon fontSize="small" /> },
+  { label: 'X (formerly Twitter)', href: profile.socials.x, icon: <XIcon fontSize="small" /> },
+  { label: 'Email', href: `mailto:${profile.email}`, icon: <EmailIcon fontSize="small" /> },
+];
 
 const Footer = () => {
   return (
-    <Box
-      component="footer"
-      sx={{
-        backgroundColor: '#050505',
-        borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-        color: '#f8fafc',
-        py: 6,
-        px: { xs: 2, sm: 6 },
-        textAlign: 'center',
-        mt: 'auto',
-      }}
-    >
-      <Box sx={{ maxWidth: 'xl', mx: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {/* Footer Title */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-          <Box 
-            sx={{
-              width: 36,
-              height: 36,
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 0 15px rgba(0, 242, 254, 0.3)',
-              position: 'relative',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                inset: 2,
-                background: '#050505',
-                borderRadius: '8px',
-                zIndex: 1,
-              }
-            }}
-          >
-            <Typography 
-              sx={{ 
-                position: 'relative', 
-                zIndex: 2, 
-                fontWeight: 900, 
-                fontSize: '1rem',
-                background: 'linear-gradient(to right, #00f2fe, #4facfe)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                letterSpacing: '-0.5px'
-              }}
-            >
-              SK
+    <Box component="footer" sx={{ backgroundColor: colors.bg, borderTop: `1px solid ${colors.border}`, py: 5, mt: 'auto' }}>
+      <Container maxWidth="lg">
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: 'space-between',
+            alignItems: { xs: 'flex-start', md: 'center' },
+            gap: 3,
+          }}
+        >
+          <Box>
+            <Logo size={1} />
+            <Typography sx={{ color: colors.muted, fontSize: '0.9rem', mt: 1 }}>
+              {profile.role} · {profile.company}
             </Typography>
           </Box>
-          <Typography 
-            variant="h6" 
-            sx={{ 
-              fontWeight: 800, 
-              letterSpacing: '-0.02em',
-              color: '#f8fafc',
-              '& span': {
-                color: '#00f2fe',
-              }
-            }}
-          >
-            Sunny<span>.</span>
-          </Typography>
+
+          <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap' }}>
+            {links.map((l) => (
+              <Box
+                key={l.label}
+                component={Link}
+                href={l.href}
+                sx={{ color: colors.muted, textDecoration: 'none', fontSize: '0.92rem', '&:hover': { color: colors.text } }}
+              >
+                {l.label}
+              </Box>
+            ))}
+          </Stack>
+
+          <Stack direction="row" spacing={0.5}>
+            {socials.map((s) => (
+              <IconButton
+                key={s.label}
+                component="a"
+                href={s.href}
+                target={s.href.startsWith('http') ? '_blank' : undefined}
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                sx={{ color: colors.muted, '&:hover': { color: colors.emerald } }}
+              >
+                {s.icon}
+              </IconButton>
+            ))}
+          </Stack>
         </Box>
 
-        {/* Subtitle */}
-        <Typography variant="body1" sx={{ color: 'text.secondary', mb: 4, maxWidth: 400 }}>
-          Software Development Engineer-1 (Frontend)
+        <Typography className="mono" sx={{ color: colors.subtle, fontSize: '0.78rem', mt: 4 }}>
+          {'©'} {new Date().getFullYear()} Sunny Kumar · Built with Next.js, TypeScript & MUI
         </Typography>
-
-        {/* Navigation Links */}
-        <Stack direction="row" spacing={{ xs: 2, md: 4 }} sx={{ justifyContent: 'center', mb: 4, flexWrap: 'wrap', gap: 2 }}>
-          <Link href="/" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Home</Link>
-          <Link href="/about" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>About</Link>
-          <Link href="/skills" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Skills</Link>
-          <Link href="/projects" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Projects</Link>
-          <Link href="/contact" style={{ color: '#94a3b8', textDecoration: 'none', fontWeight: 500, transition: 'color 0.2s' }}>Contact</Link>
-        </Stack>
-
-        {/* Social Media Icons */}
-        <Stack direction="row" spacing={2} sx={{ justifyContent: 'center', mb: 4 }}>
-          <IconButton
-            component="a"
-            href="https://github.com/sunnykumar-devhub"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub"
-            sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', transform: 'translateY(-2px)', transition: 'all 0.2s' } }}
-          >
-            <GitHubIcon />
-          </IconButton>
-          <IconButton
-            component="a"
-            href="https://www.linkedin.com/in/sunnykumarsde"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', transform: 'translateY(-2px)', transition: 'all 0.2s' } }}
-          >
-            <LinkedInIcon />
-          </IconButton>
-          <IconButton
-            component="a"
-            href="https://x.com/sunnykumar_17"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="X (formerly Twitter)"
-            sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', transform: 'translateY(-2px)', transition: 'all 0.2s' } }}
-          >
-            <XIcon />
-          </IconButton>
-          <IconButton
-            component="a"
-            href="mailto:sunnykumar91728@gmail.com"
-            aria-label="Email"
-            sx={{ color: 'text.secondary', '&:hover': { color: '#00f2fe', transform: 'translateY(-2px)', transition: 'all 0.2s' } }}
-          >
-            <EmailIcon />
-          </IconButton>
-        </Stack>
-
-        <Divider sx={{ width: '100%', borderColor: 'rgba(255,255,255,0.05)', mb: 3 }} />
-
-        {/* Copyright */}
-        <Typography variant="body2" sx={{ color: '#64748b' }}>
-          {'\u00A9'} {new Date().getFullYear()} Sunny Kumar. All rights reserved.
-        </Typography>
-      </Box>
+      </Container>
     </Box>
   );
 };

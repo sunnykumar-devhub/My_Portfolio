@@ -32,7 +32,8 @@ Set the same variable in the Vercel project's Environment Variables before deplo
 ## Project structure
 
 - `app/` — routes (App Router): `/`, `/about`, `/projects`, `/skills`, `/contact`, plus `not-found.tsx` and `loading.tsx`
+- `src/data/profile.ts` — all portfolio content (experience, projects, skills, education); edit this to update the site
 - `src/Containers/` — the actual section/page content, shared between routes where relevant
-- `src/Components/` — shared layout pieces (Header, Footer, Loader)
+- `src/Components/` — shared layout pieces (Header, Footer, Loader) and common building blocks (Section, SectionHeading, Reveal, TechChip, Logo)
 - `src/theme/` — the MUI theme
-- `src/config/site.ts` — site-wide config (resume URL, contact email, form key)
+- `src/config/site.ts` — site-wide config (site URL, resume URL, contact email, form key)
