@@ -8,12 +8,27 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CheckIcon from '@mui/icons-material/Check';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import AccountBalanceOutlinedIcon from '@mui/icons-material/AccountBalanceOutlined';
+import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
+import CodeOutlinedIcon from '@mui/icons-material/CodeOutlined';
 import Section from '../../Components/Common/Section';
 import SectionHeading from '../../Components/Common/SectionHeading';
 import Reveal from '../../Components/Common/Reveal';
+import Surface from '../../Components/Common/Surface';
 import TechChip from '../../Components/Common/TechChip';
-import { moreWork, personalProjects, workProjects, type Project } from '../../data/profile';
+import { moreWork, personalProjects, workProjects, type Project, type ProjectDomain } from '../../data/profile';
 import { colors } from '../../theme';
+
+// Artwork for each project domain: an icon plus the two colours of the card's glow
+const domainArt: Record<ProjectDomain, { Icon: typeof CodeOutlinedIcon; from: string; to: string }> = {
+  martech: { Icon: CampaignOutlinedIcon, from: '#f472b6', to: '#a78bfa' },
+  edtech: { Icon: SchoolOutlinedIcon, from: '#60a5fa', to: '#34d399' },
+  govtech: { Icon: AccountBalanceOutlinedIcon, from: '#fbbf24', to: '#34d399' },
+  web: { Icon: LanguageOutlinedIcon, from: '#38bdf8', to: '#818cf8' },
+  personal: { Icon: CodeOutlinedIcon, from: '#34d399', to: '#60a5fa' },
+};
 
 const ProjectLinks: React.FC<{ project: Project }> = ({ project }) => {
   if (!project.code && !project.live) {
@@ -42,109 +57,142 @@ const ProjectLinks: React.FC<{ project: Project }> = ({ project }) => {
   );
 };
 
-const FeaturedCard: React.FC<{ project: Project; index: number }> = ({ project, index }) => (
-  <Box
-    sx={{
-      position: 'relative',
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      p: { xs: 3, md: 4 },
-      borderRadius: '20px',
-      border: `1px solid ${colors.border}`,
-      backgroundColor: colors.surface,
-      overflow: 'hidden',
-      transition: 'border-color .25s, transform .25s',
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '2px',
-        background: colors.gradient,
-        opacity: 0,
-        transition: 'opacity .25s',
-      },
-      '&:hover': { borderColor: colors.borderStrong, transform: 'translateY(-4px)' },
-      '&:hover::before': { opacity: 1 },
-    }}
-  >
-    <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'center', mb: 2.5 }}>
-      <Typography
-        className="mono"
+const StackChips: React.FC<{ stack: string[] }> = ({ stack }) => (
+  <Box component="ul" aria-label="Tech stack" sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, listStyle: 'none' }}>
+    {stack.map((tech) => (
+      <li key={tech}>
+        <TechChip label={tech} />
+      </li>
+    ))}
+  </Box>
+);
+
+// Decorative banner at the top of a featured card: domain glow, faint grid and the domain icon
+const CardArt: React.FC<{ project: Project; index: number }> = ({ project, index }) => {
+  const { Icon, from, to } = domainArt[project.domain];
+  return (
+    <Box
+      aria-hidden
+      sx={{
+        position: 'relative',
+        height: { xs: 120, md: 140 },
+        mx: { xs: -3, md: -4 },
+        mt: { xs: -3, md: -4 },
+        mb: 3,
+        overflow: 'hidden',
+        borderBottom: `1px solid ${colors.border}`,
+        background: `radial-gradient(120% 140% at 0% 0%, ${from}33, transparent 55%),
+                     radial-gradient(120% 140% at 100% 100%, ${to}2e, transparent 55%), ${colors.bgAlt}`,
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `linear-gradient(${colors.border} 1px, transparent 1px), linear-gradient(90deg, ${colors.border} 1px, transparent 1px)`,
+          backgroundSize: '28px 28px',
+          maskImage: 'linear-gradient(to bottom, #000, transparent)',
+        },
+      }}
+    >
+      <Box
+        className="card-art-icon"
         sx={{
-          fontSize: '0.75rem',
-          color: colors.emerald,
-          px: 1.25,
-          py: 0.5,
-          borderRadius: '6px',
-          backgroundColor: 'rgba(52, 211, 153, 0.08)',
-          border: '1px solid rgba(52, 211, 153, 0.2)',
+          position: 'absolute',
+          left: { xs: 24, md: 32 },
+          bottom: 20,
+          zIndex: 1,
+          width: 52,
+          height: 52,
+          display: 'grid',
+          placeItems: 'center',
+          borderRadius: '14px',
+          color: colors.text,
+          background: `linear-gradient(135deg, ${from}, ${to})`,
+          boxShadow: `0 12px 30px ${from}40`,
+          transition: 'transform .3s',
         }}
       >
-        {project.category}
-      </Typography>
-      <Typography className="mono" sx={{ fontSize: '0.8rem', color: colors.subtle }}>
+        <Icon />
+      </Box>
+      <Typography
+        className="mono"
+        sx={{ position: 'absolute', right: { xs: 24, md: 32 }, top: 18, zIndex: 1, fontSize: '0.8rem', color: colors.subtle }}
+      >
         {String(index + 1).padStart(2, '0')}
       </Typography>
-    </Stack>
+    </Box>
+  );
+};
 
-    <Typography variant="h4" sx={{ fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 1.5 }}>
+const FeaturedCard: React.FC<{ project: Project; index: number }> = ({ project, index }) => (
+  <Surface
+    component="article"
+    interactive
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'hidden',
+      borderRadius: '20px',
+      '&:hover .card-art-icon': { transform: 'translateY(-4px) rotate(-4deg)' },
+    }}
+  >
+    <CardArt project={project} index={index} />
+
+    <Typography className="mono" sx={{ fontSize: '0.75rem', color: colors.emerald, mb: 1 }}>
+      {project.category}
+    </Typography>
+    <Typography variant="h3" sx={{ fontSize: { xs: '1.35rem', md: '1.6rem' }, mb: 1.5 }}>
       {project.title}
     </Typography>
     <Typography sx={{ color: colors.muted, lineHeight: 1.75, mb: 2.5 }}>{project.description}</Typography>
 
     {project.highlights.length > 0 && (
       <Box component="ul" sx={{ listStyle: 'none', display: 'grid', gap: 1, mb: 3 }}>
-        {project.highlights.map((h) => (
-          <Box component="li" key={h} sx={{ display: 'flex', gap: 1.25, alignItems: 'flex-start', fontSize: '0.95rem' }}>
-            <CheckIcon sx={{ fontSize: 18, mt: '3px', color: colors.emerald }} />
-            <span>{h}</span>
+        {project.highlights.map((highlight) => (
+          <Box component="li" key={highlight} sx={{ display: 'flex', gap: 1.25, alignItems: 'flex-start', fontSize: '0.95rem' }}>
+            <CheckIcon aria-hidden sx={{ fontSize: 18, mt: '3px', color: colors.emerald }} />
+            <span>{highlight}</span>
           </Box>
         ))}
       </Box>
     )}
 
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 3, mt: 'auto' }}>
-      {project.stack.map((t) => (
-        <TechChip key={t} label={t} />
-      ))}
+    <Box sx={{ mt: 'auto' }}>
+      <StackChips stack={project.stack} />
+      <Box sx={{ mt: 3, pt: 2.5, borderTop: `1px solid ${colors.border}` }}>
+        <ProjectLinks project={project} />
+      </Box>
     </Box>
-
-    <Box sx={{ pt: 2.5, borderTop: `1px solid ${colors.border}` }}>
-      <ProjectLinks project={project} />
-    </Box>
-  </Box>
+  </Surface>
 );
 
 const CompactCard: React.FC<{ project: Project }> = ({ project }) => (
-  <Box
-    sx={{
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      p: 3,
-      borderRadius: '16px',
-      border: `1px solid ${colors.border}`,
-      backgroundColor: colors.surface,
-      transition: 'border-color .25s',
-      '&:hover': { borderColor: colors.borderStrong },
-    }}
-  >
+  <Surface component="article" interactive sx={{ display: 'flex', flexDirection: 'column', p: 3, borderRadius: '16px' }}>
     <Typography className="mono" sx={{ fontSize: '0.75rem', color: colors.sky, mb: 1 }}>
       {project.category}
     </Typography>
-    <Typography variant="h6" sx={{ mb: 1 }}>
+    <Typography variant="h3" sx={{ fontSize: '1.2rem', mb: 1 }}>
       {project.title}
     </Typography>
     <Typography sx={{ color: colors.muted, fontSize: '0.93rem', lineHeight: 1.7, mb: 2 }}>{project.description}</Typography>
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 2.5, mt: 'auto' }}>
-      {project.stack.map((t) => (
-        <TechChip key={t} label={t} />
+    <Box sx={{ mt: 'auto', display: 'grid', gap: 2.5 }}>
+      <StackChips stack={project.stack} />
+      <ProjectLinks project={project} />
+    </Box>
+  </Surface>
+);
+
+const ProjectGroup: React.FC<{ title: string; projects: Project[] }> = ({ title, projects }) => (
+  <Box sx={{ mt: { xs: 8, md: 10 } }}>
+    <Typography variant="h2" sx={{ fontSize: '1.5rem', mb: 3 }}>
+      {title}
+    </Typography>
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+      {projects.map((project) => (
+        <Reveal key={project.title} style={{ height: '100%' }}>
+          <CompactCard project={project} />
+        </Reveal>
       ))}
     </Box>
-    <ProjectLinks project={project} />
   </Box>
 );
 
@@ -152,43 +200,23 @@ const Projects: React.FC<{ full?: boolean }> = ({ full = false }) => {
   return (
     <Section id="projects">
       <SectionHeading
-        index="03"
         eyebrow="work"
         title="Production apps I've built"
         subtitle="Enterprise applications I've delivered frontend features for at Codebucket, used by real brands, schools, government boards and citizens."
       />
 
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
-        {workProjects.map((p, i) => (
-          <Reveal key={p.title} delay={(i % 2) * 0.1} style={{ height: '100%' }}>
-            <FeaturedCard project={p} index={i} />
+        {workProjects.map((project, i) => (
+          <Reveal key={project.title} delay={(i % 2) * 0.1} style={{ height: '100%' }}>
+            <FeaturedCard project={project} index={i} />
           </Reveal>
         ))}
       </Box>
 
       {full ? (
         <>
-          <Typography variant="h5" sx={{ mt: 10, mb: 3 }}>
-            More work at Codebucket
-          </Typography>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
-            {moreWork.map((p) => (
-              <Reveal key={p.title} style={{ height: '100%' }}>
-                <CompactCard project={p} />
-              </Reveal>
-            ))}
-          </Box>
-
-          <Typography variant="h5" sx={{ mt: 8, mb: 3 }}>
-            Personal projects
-          </Typography>
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
-            {personalProjects.map((p) => (
-              <Reveal key={p.title} style={{ height: '100%' }}>
-                <CompactCard project={p} />
-              </Reveal>
-            ))}
-          </Box>
+          <ProjectGroup title="More work at Codebucket" projects={moreWork} />
+          <ProjectGroup title="Personal projects" projects={personalProjects} />
         </>
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>

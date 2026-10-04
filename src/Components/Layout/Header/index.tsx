@@ -8,14 +8,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '../../Common/Logo';
 import { RESUME_URL } from '../../../config/site';
+import { navItems } from '../../../config/navigation';
 import { colors } from '../../../theme';
-
-const navItems = [
-  { label: 'About', path: '/about' },
-  { label: 'Projects', path: '/projects' },
-  { label: 'Skills', path: '/skills' },
-  { label: 'Contact', path: '/contact' },
-];
 
 // Home page sections and the nav item each one highlights
 const sectionToPath: Record<string, string> = {

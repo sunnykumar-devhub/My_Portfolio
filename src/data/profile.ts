@@ -14,11 +14,28 @@ export const profile = {
     "I'm a frontend engineer at Codebucket Solutions, where I joined as an intern and was promoted to Software Development Engineer I. Over 2+ years I've delivered frontend features for 4 production enterprise applications in MarTech, EdTech and GovTech.",
     'My day-to-day is turning complex workflows into interfaces that feel simple: role-based dashboards, multi-step forms, payment flows, secure authentication and real-time features. I care about predictable state, reusable components and pages that stay fast with large datasets.',
   ],
-  socials: {
-    github: 'https://github.com/sunnykumar-devhub',
-    linkedin: 'https://www.linkedin.com/in/sunnykumar-devhub',
-    x: 'https://x.com/sunnykumar_17',
-  },
+};
+
+export type SocialId = 'github' | 'linkedin' | 'x' | 'email';
+
+export type SocialLink = {
+  id: SocialId;
+  label: string;
+  handle: string;
+  href: string;
+};
+
+export const socialLinks: SocialLink[] = [
+  { id: 'github', label: 'GitHub', handle: 'sunnykumar-devhub', href: 'https://github.com/sunnykumar-devhub' },
+  { id: 'linkedin', label: 'LinkedIn', handle: 'in/sunnykumar-devhub', href: 'https://www.linkedin.com/in/sunnykumar-devhub' },
+  { id: 'x', label: 'X', handle: '@sunnykumar_17', href: 'https://x.com/sunnykumar_17' },
+  { id: 'email', label: 'Email', handle: profile.email, href: `mailto:${profile.email}` },
+];
+
+export const getSocialLink = (id: SocialId): SocialLink => {
+  const link = socialLinks.find((l) => l.id === id);
+  if (!link) throw new Error(`Unknown social link: ${id}`);
+  return link;
 };
 
 export const stats = [
@@ -86,9 +103,12 @@ export const experience: Role[] = [
   },
 ];
 
+export type ProjectDomain = 'martech' | 'edtech' | 'govtech' | 'web' | 'personal';
+
 export type Project = {
   title: string;
   category: string;
+  domain: ProjectDomain;
   description: string;
   highlights: string[];
   stack: string[];
@@ -101,6 +121,7 @@ export const workProjects: Project[] = [
   {
     title: 'Influency Dashboard',
     category: 'MarTech SaaS',
+    domain: 'martech',
     description:
       'Influencer marketing platform connecting Brands, Influencers and Admins for campaigns, creator discovery, content approval, payments and real-time communication.',
     highlights: [
@@ -113,6 +134,7 @@ export const workProjects: Project[] = [
   {
     title: 'Education Connect',
     category: 'EdTech · LMS',
+    domain: 'edtech',
     description:
       'Learning management system serving Students, Mentors, School Admins and Platform Admins with protected content, subscriptions and analytics.',
     highlights: [
@@ -125,6 +147,7 @@ export const workProjects: Project[] = [
   {
     title: 'Bihar Sanskrit Shiksha Board Portal',
     category: 'GovTech · Next.js',
+    domain: 'govtech',
     description:
       'Government education platform for institute registration, student enrollment, document verification, payments and board administration.',
     highlights: [
@@ -137,6 +160,7 @@ export const workProjects: Project[] = [
   {
     title: 'Bhumi Rupantaran',
     category: 'GovTech · Land records',
+    domain: 'govtech',
     description:
       'Government portal that digitizes land-use conversion applications for citizens and land revenue officials, replacing paper-based processes.',
     highlights: [
@@ -152,6 +176,7 @@ export const moreWork: Project[] = [
   {
     title: 'Abhiyan Basera Public Portal',
     category: 'GovTech',
+    domain: 'govtech',
     description: 'Public-facing government portal where I was the sole frontend owner, from UI through API integration.',
     highlights: [],
     stack: ['React.js', 'REST APIs'],
@@ -159,6 +184,7 @@ export const moreWork: Project[] = [
   {
     title: 'Sujan Singh Investment Advisory',
     category: 'Website · Next.js',
+    domain: 'web',
     description: 'Marketing website for an investment advisory firm, built with Next.js.',
     highlights: [],
     stack: ['Next.js'],
@@ -170,6 +196,7 @@ export const personalProjects: Project[] = [
   {
     title: 'SSRStyles',
     category: 'Personal · Full-stack',
+    domain: 'personal',
     description:
       'Full-stack e-commerce platform with JWT authentication, product listings, cart workflows, REST APIs and image uploads.',
     highlights: [],
@@ -179,10 +206,11 @@ export const personalProjects: Project[] = [
   {
     title: 'Task Tracker',
     category: 'Personal · Frontend',
+    domain: 'personal',
     description:
-      'Role-based task tracker for managers and developers with drag-and-drop workflows, React Hook Form and progress charts.',
+      'Role-based task tracker with Admin and Developer dashboards, a drag-and-drop task board and progress charts.',
     highlights: [],
-    stack: ['React.js', 'Redux Toolkit', 'React DnD', 'React Hook Form', 'Chart.js'],
+    stack: ['React.js', 'Redux Toolkit', 'React DnD', 'Chart.js', 'JSON Server'],
     code: 'https://github.com/sunnykumar-devhub/TaskTracker',
   },
 ];
@@ -216,4 +244,26 @@ export const certifications = [
   { name: 'Introduction to HTML', issuer: 'Infosys Springboard', date: 'Jan 2024' },
   { name: 'Leading in the Age of Generative AI', issuer: 'Infosys Springboard', date: 'Jan 2024' },
   { name: 'Career Essentials in Generative AI', issuer: 'Microsoft & LinkedIn', date: 'Sep 2023' },
+];
+
+// Shown in the scrolling strip under the hero
+export const marqueeTech = [
+  'React',
+  'Next.js',
+  'TypeScript',
+  'JavaScript',
+  'Redux Toolkit',
+  'RTK Query',
+  'React Query',
+  'Material UI',
+  'Tailwind CSS',
+  'SCSS',
+  'React Hook Form',
+  'Formik',
+  'Zod',
+  'Socket.IO',
+  'Razorpay',
+  'Vite',
+  'Git',
+  'Jira',
 ];

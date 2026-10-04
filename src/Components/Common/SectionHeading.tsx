@@ -4,17 +4,19 @@ import { colors } from '../../theme';
 import Reveal from './Reveal';
 
 type Props = {
-  index: string;
   eyebrow: string;
   title: React.ReactNode;
   subtitle?: string;
 };
 
-const SectionHeading: React.FC<Props> = ({ index, eyebrow, title, subtitle }) => (
+const SectionHeading: React.FC<Props> = ({ eyebrow, title, subtitle }) => (
   <Reveal>
     <Box sx={{ mb: { xs: 5, md: 7 }, maxWidth: 720 }}>
       <Typography className="mono" sx={{ color: colors.emerald, fontSize: '0.85rem', mb: 1.5, letterSpacing: '0.04em' }}>
-        <Box component="span" sx={{ color: colors.subtle }}>{index} /</Box> {eyebrow}
+        <Box component="span" sx={{ color: colors.subtle }}>
+          {'// '}
+        </Box>
+        {eyebrow}
       </Typography>
       <Typography variant="h2" sx={{ fontSize: { xs: '2rem', md: '2.75rem' }, lineHeight: 1.15, mb: subtitle ? 2 : 0 }}>
         {title}
