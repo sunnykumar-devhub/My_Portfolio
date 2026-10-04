@@ -1,35 +1,35 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import { Box } from '@mui/material';
-import { inter, outfit } from '../src/lib/fonts';
+import { inter, mono } from '../src/lib/fonts';
+import { SITE_URL } from '../src/config/site';
 import Providers from './providers';
 import Header from '../src/Components/Layout/Header';
 import Footer from '../src/Components/Layout/Footer';
 import './globals.css';
 
-const SITE_URL = 'https://my-portfolio-three-sigma-15.vercel.app';
-const SITE_TITLE = 'Sunny.dev | Frontend Engineer';
+const SITE_TITLE = 'Sunny Kumar | Frontend Engineer (React, Next.js)';
 const SITE_DESCRIPTION =
-  'Sunny Kumar – Frontend engineer (SDE-1) building fast, role-based web apps with React, Next.js and TypeScript at Codebucket Solutions.';
+  'Sunny Kumar is a frontend engineer (SDE-I) at Codebucket Solutions building role-based SaaS, EdTech and GovTech web apps with React, Next.js, TypeScript and Redux Toolkit.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
-    template: '%s | Sunny.dev',
+    template: '%s | Sunny Kumar',
   },
   description: SITE_DESCRIPTION,
   authors: [{ name: 'Sunny Kumar' }],
   alternates: { canonical: '/' },
   icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23050505'/><text x='50' y='68' font-family='sans-serif' font-weight='900' font-size='50' fill='%2300f2fe' text-anchor='middle'>SK</text></svg>",
+    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%2334d399'/><stop offset='1' stop-color='%2360a5fa'/></linearGradient></defs><rect width='100' height='100' rx='24' fill='%2307090d'/><text x='50' y='67' font-family='monospace' font-weight='700' font-size='46' fill='url(%23g)' text-anchor='middle'>SK</text></svg>",
   },
   openGraph: {
     type: 'website',
-    siteName: 'Sunny.dev',
+    siteName: 'Sunny Kumar',
     url: SITE_URL,
     title: 'Sunny Kumar | Frontend Engineer',
-    description: 'Frontend engineer building fast, role-based web apps with React, Next.js and TypeScript.',
+    description: 'Frontend engineer (SDE-I) building role-based SaaS, EdTech and GovTech web apps with React, Next.js and TypeScript.',
     images: [
       {
         url: '/og-image.png',
@@ -43,23 +43,23 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@sunnykumar_17',
     title: 'Sunny Kumar | Frontend Engineer',
-    description: 'Frontend engineer building fast, role-based web apps with React, Next.js and TypeScript.',
+    description: 'Frontend engineer (SDE-I) building role-based SaaS, EdTech and GovTech web apps with React, Next.js and TypeScript.',
     images: ['/og-image.png'],
   },
 };
 
 export const viewport = {
-  themeColor: '#050505',
+  themeColor: '#07090d',
 };
 
 const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
+    <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body>
         <Providers>
           <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Header />
-            <Box component="main" sx={{ flexGrow: 1, pt: { xs: 8, md: 10 } }}>
+            <Box component="main" sx={{ flexGrow: 1, pt: '72px' }}>
               {children}
             </Box>
             <Footer />

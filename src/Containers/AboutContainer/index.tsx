@@ -1,107 +1,74 @@
 'use client';
 
 import React from 'react';
-import { Box, Container, Typography, Grid, Paper } from '@mui/material';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Button as MuiButton } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
+import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
+import Section from '../../Components/Common/Section';
+import SectionHeading from '../../Components/Common/SectionHeading';
+import Reveal from '../../Components/Common/Reveal';
+import { focusAreas, profile } from '../../data/profile';
+import { colors } from '../../theme';
 
-const AboutSummary: React.FC = () => {
+const icons = [DashboardOutlinedIcon, StorageOutlinedIcon, LockOutlinedIcon, SpeedOutlinedIcon];
+
+const About: React.FC = () => {
   return (
-    <Box
-      id="about"
-      sx={{
-        py: { xs: 8, md: 12 },
-        backgroundColor: '#050505',
-        position: 'relative',
-      }}
-    >
-      <Container maxWidth="lg">
-        <Grid container spacing={6} sx={{ alignItems: 'center' }}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6 }}
-            >
-              <Typography variant="h2" className="text-gradient" sx={{ fontWeight: 800, mb: 2 }}>
-                About Me
-              </Typography>
-              <Typography variant="h5" sx={{ color: 'text.primary', fontWeight: 600, mb: 3 }}>
-                Engineering robust digital experiences.
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'text.secondary', fontSize: '1.1rem', mb: 3, lineHeight: 1.8 }}>
-                I am a Software Development Engineer-1 (Frontend) with hands-on experience building scalable, production-ready web applications using <strong>React.js, Next.js, and TypeScript</strong>.
-              </Typography>
-              <Typography variant="body1" sx={{ color: 'text.secondary', fontSize: '1.1rem', mb: 4, lineHeight: 1.8 }}>
-                Currently at <strong>Codebucket Solutions Private Limited</strong>, I contribute to role-based systems, reusable component architectures, and performance-optimized user interfaces. I actively leverage AI-assisted development tools to accelerate delivery while maintaining strict ownership of engineering decisions.
-              </Typography>
-              
-              <MuiButton
-                component={Link}
-                href="/about"
-                variant="outlined"
-                endIcon={<ArrowForwardIcon />}
-                sx={{
-                  color: '#00f2fe',
-                  borderColor: 'rgba(0, 242, 254, 0.5)',
-                  px: 3,
-                  py: 1,
-                  borderRadius: '8px',
-                  '&:hover': {
-                    borderColor: '#00f2fe',
-                    background: 'rgba(0, 242, 254, 0.05)'
-                  }
-                }}
-              >
-                Read Full Details
-              </MuiButton>
-            </motion.div>
-          </Grid>
-          
-          <Grid size={{ xs: 12, md: 6 }}>
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Box sx={{ display: 'grid', gap: { xs: 2, sm: 3 }, gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }}>
-                {[
-                  { number: '2+', label: 'Years Experience' },
-                  { number: '10+', label: 'Projects Built' },
-                  { number: 'SDE-1', label: 'Promoted from Intern' },
-                  { number: '4', label: 'Certifications' }
-                ].map((stat, idx) => (
-                  <Paper 
-                    key={idx}
-                    className="glass"
-                    sx={{ 
-                      p: { xs: 2.5, sm: 4 }, 
-                      minWidth: 0,
-                      textAlign: 'center',
-                      borderRadius: '16px',
-                      transition: 'transform 0.3s ease',
-                      '&:hover': { transform: 'translateY(-5px)' }
+    <Section id="about">
+      <SectionHeading index="01" eyebrow="about" title="Turning complex workflows into interfaces that feel simple." />
+
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: { xs: 5, md: 8 } }}>
+        <Reveal>
+          {profile.summary.map((p) => (
+            <Typography key={p.slice(0, 20)} sx={{ color: colors.muted, fontSize: '1.075rem', lineHeight: 1.85, mb: 2.5 }}>
+              {p}
+            </Typography>
+          ))}
+        </Reveal>
+
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 2 }}>
+          {focusAreas.map((f, i) => {
+            const Icon = icons[i];
+            return (
+              <Reveal key={f.title} delay={i * 0.08} style={{ height: '100%' }}>
+                <Box
+                  sx={{
+                    height: '100%',
+                    p: 3,
+                    borderRadius: '16px',
+                    border: `1px solid ${colors.border}`,
+                    backgroundColor: colors.surface,
+                    transition: 'border-color .25s, transform .25s',
+                    '&:hover': { borderColor: 'rgba(52, 211, 153, 0.4)', transform: 'translateY(-3px)' },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      mb: 2,
+                      display: 'grid',
+                      placeItems: 'center',
+                      borderRadius: '10px',
+                      color: colors.emerald,
+                      backgroundColor: 'rgba(52, 211, 153, 0.08)',
+                      border: '1px solid rgba(52, 211, 153, 0.2)',
                     }}
                   >
-                    <Typography variant="h3" sx={{ fontWeight: 800, color: '#f8fafc', mb: 1, fontSize: { xs: '2rem', sm: '3rem' } }}>
-                      {stat.number}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: '#00f2fe', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', overflowWrap: 'anywhere', fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
-                      {stat.label}
-                    </Typography>
-                  </Paper>
-                ))}
-              </Box>
-            </motion.div>
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
+                    <Icon fontSize="small" />
+                  </Box>
+                  <Typography sx={{ fontWeight: 700, mb: 1 }}>{f.title}</Typography>
+                  <Typography sx={{ color: colors.muted, fontSize: '0.92rem', lineHeight: 1.65 }}>{f.text}</Typography>
+                </Box>
+              </Reveal>
+            );
+          })}
+        </Box>
+      </Box>
+    </Section>
   );
 };
 
-export default AboutSummary;
+export default About;
