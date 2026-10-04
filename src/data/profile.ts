@@ -41,7 +41,7 @@ export const getSocialLink = (id: SocialId): SocialLink => {
 export const stats = [
   { value: '2+', label: 'Years building production apps' },
   { value: '4', label: 'Enterprise apps shipped' },
-  { value: '100K+', label: 'Records handled in one portal' },
+  { value: '100K+', label: 'Applications searchable in a GovTech portal' },
   { value: 'Intern → SDE-I', label: 'Promoted at Codebucket' },
 ];
 
