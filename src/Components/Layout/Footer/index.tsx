@@ -24,7 +24,7 @@ const Footer = () => {
           <Box>
             <Logo size={1} />
             <Typography sx={{ color: colors.muted, fontSize: '0.9rem', mt: 1 }}>
-              {profile.role} · {profile.company}
+              Frontend Engineer · {profile.location}
             </Typography>
           </Box>
 
