@@ -1,4 +1,5 @@
 import Hero from '../HeroContainer';
+import TechMarquee from '../../Components/Common/TechMarquee';
 import About from '../AboutContainer';
 import Experience from '../ExperienceContainer';
 import Projects from '../ProjectsContainer';
@@ -11,6 +12,7 @@ const HomeContainer: React.FC = () => {
   return (
     <>
       <Hero />
+      <TechMarquee />
       <About />
       <Experience />
       <Projects />

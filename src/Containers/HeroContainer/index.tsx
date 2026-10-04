@@ -3,12 +3,10 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Box, Container, Typography, Stack, Button, IconButton } from '@mui/material';
+import { Box, Container, Typography, Stack, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DownloadIcon from '@mui/icons-material/FileDownloadOutlined';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import EmailIcon from '@mui/icons-material/EmailOutlined';
+import SocialLinks from '../../Components/Common/SocialLinks';
 import { RESUME_URL } from '../../config/site';
 import { profile, stats } from '../../data/profile';
 import { colors } from '../../theme';
@@ -154,30 +152,9 @@ const Hero: React.FC = () => {
                 )}
               </Stack>
 
-              <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-                {[
-                  { href: profile.socials.github, label: 'GitHub', icon: <GitHubIcon fontSize="small" /> },
-                  { href: profile.socials.linkedin, label: 'LinkedIn', icon: <LinkedInIcon fontSize="small" /> },
-                  { href: `mailto:${profile.email}`, label: 'Email', icon: <EmailIcon fontSize="small" /> },
-                ].map((s) => (
-                  <IconButton
-                    key={s.label}
-                    component="a"
-                    href={s.href}
-                    target={s.href.startsWith('http') ? '_blank' : undefined}
-                    rel="noopener noreferrer"
-                    aria-label={s.label}
-                    sx={{
-                      color: colors.muted,
-                      border: `1px solid ${colors.border}`,
-                      borderRadius: '10px',
-                      '&:hover': { color: colors.emerald, borderColor: colors.emerald },
-                    }}
-                  >
-                    {s.icon}
-                  </IconButton>
-                ))}
-                <Typography className="mono" sx={{ pl: 1, fontSize: '0.8rem', color: colors.subtle }}>
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', flexWrap: 'wrap', rowGap: 1 }}>
+                <SocialLinks ids={['github', 'linkedin', 'email']} variant="outlined" />
+                <Typography className="mono" sx={{ fontSize: '0.8rem', color: colors.subtle }}>
                   {profile.location}
                 </Typography>
               </Stack>

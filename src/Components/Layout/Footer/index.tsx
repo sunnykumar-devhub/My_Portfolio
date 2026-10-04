@@ -1,28 +1,12 @@
 'use client';
 
-import { Box, Container, Typography, Stack, IconButton } from '@mui/material';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import EmailIcon from '@mui/icons-material/EmailOutlined';
-import XIcon from '@mui/icons-material/X';
+import { Box, Container, Typography, Stack } from '@mui/material';
 import Link from 'next/link';
 import Logo from '../../Common/Logo';
+import SocialLinks from '../../Common/SocialLinks';
+import { navItems } from '../../../config/navigation';
 import { profile } from '../../../data/profile';
 import { colors } from '../../../theme';
-
-const links = [
-  { label: 'About', href: '/about' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Skills', href: '/skills' },
-  { label: 'Contact', href: '/contact' },
-];
-
-const socials = [
-  { label: 'GitHub', href: profile.socials.github, icon: <GitHubIcon fontSize="small" /> },
-  { label: 'LinkedIn', href: profile.socials.linkedin, icon: <LinkedInIcon fontSize="small" /> },
-  { label: 'X (formerly Twitter)', href: profile.socials.x, icon: <XIcon fontSize="small" /> },
-  { label: 'Email', href: `mailto:${profile.email}`, icon: <EmailIcon fontSize="small" /> },
-];
 
 const Footer = () => {
   return (
@@ -45,37 +29,23 @@ const Footer = () => {
           </Box>
 
           <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap' }}>
-            {links.map((l) => (
+            {navItems.map((item) => (
               <Box
-                key={l.label}
+                key={item.label}
                 component={Link}
-                href={l.href}
+                href={item.path}
                 sx={{ color: colors.muted, textDecoration: 'none', fontSize: '0.92rem', '&:hover': { color: colors.text } }}
               >
-                {l.label}
+                {item.label}
               </Box>
             ))}
           </Stack>
 
-          <Stack direction="row" spacing={0.5}>
-            {socials.map((s) => (
-              <IconButton
-                key={s.label}
-                component="a"
-                href={s.href}
-                target={s.href.startsWith('http') ? '_blank' : undefined}
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                sx={{ color: colors.muted, '&:hover': { color: colors.emerald } }}
-              >
-                {s.icon}
-              </IconButton>
-            ))}
-          </Stack>
+          <SocialLinks />
         </Box>
 
         <Typography className="mono" sx={{ color: colors.subtle, fontSize: '0.78rem', mt: 4 }}>
-          {'©'} {new Date().getFullYear()} Sunny Kumar · Built with Next.js, TypeScript & MUI
+          {'©'} {new Date().getFullYear()} Sunny Kumar · Built with Next.js, TypeScript and Material UI
         </Typography>
       </Container>
     </Box>

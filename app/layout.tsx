@@ -6,6 +6,9 @@ import { SITE_URL } from '../src/config/site';
 import Providers from './providers';
 import Header from '../src/Components/Layout/Header';
 import Footer from '../src/Components/Layout/Footer';
+import ScrollProgress from '../src/Components/Layout/ScrollProgress';
+import BackToTop from '../src/Components/Layout/BackToTop';
+import { personJsonLd } from '../src/lib/structuredData';
 import './globals.css';
 
 const SITE_TITLE = 'Sunny Kumar | Frontend Engineer (React, Next.js)';
@@ -56,14 +59,24 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body>
+        <script
+          type="application/ld+json"
+          // Escape "<" so the JSON can never close the script tag early
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, '\\u003c') }}
+        />
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <Providers>
+          <ScrollProgress />
           <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Header />
-            <Box component="main" sx={{ flexGrow: 1, pt: '72px' }}>
+            <Box component="main" id="main-content" tabIndex={-1} sx={{ flexGrow: 1, pt: '72px', outline: 'none' }}>
               {children}
             </Box>
             <Footer />
           </Box>
+          <BackToTop />
         </Providers>
       </body>
     </html>
