@@ -12,7 +12,7 @@ const NotFound: React.FC = () => {
         <Typography className="mono" sx={{ color: 'primary.main', mb: 2 }}>
           error 404
         </Typography>
-        <Typography variant="h2" sx={{ fontSize: { xs: '2.25rem', md: '3rem' }, mb: 2 }}>
+        <Typography variant="h2" component="h1" sx={{ fontSize: { xs: '2.25rem', md: '3rem' }, mb: 2 }}>
           This page doesn&apos;t exist.
         </Typography>
         <Typography sx={{ color: 'text.secondary', mb: 5 }}>

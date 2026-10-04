@@ -6,7 +6,7 @@ import Education from '../EducationContainer';
 // The /about page: the full story without the hero and projects
 const AboutDetailedContainer: React.FC = () => (
   <>
-    <About />
+    <About standalone />
     <Experience />
     <Skills />
     <Education />

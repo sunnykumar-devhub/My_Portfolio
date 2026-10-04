@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const ContactPage = () => {
-  return <ContactContainer />;
+  return <ContactContainer standalone />;
 };
 
 export default ContactPage;

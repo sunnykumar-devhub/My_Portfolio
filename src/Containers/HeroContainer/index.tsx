@@ -17,8 +17,10 @@ const fadeUp = (delay: number) => ({
   style: { animation: `fade-up 0.6s ease-out ${delay}s both` },
 });
 
+// Decorative "code editor" card next to the photo; hidden from screen readers since the same facts are in the text
 const CodeCard: React.FC = () => (
   <Box
+    aria-hidden
     sx={{
       borderRadius: '14px',
       border: `1px solid ${colors.borderStrong}`,
@@ -114,7 +116,7 @@ const Hero: React.FC = () => {
                   backgroundColor: 'rgba(15, 19, 26, 0.8)',
                 }}
               >
-                <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: colors.emerald, boxShadow: `0 0 10px ${colors.emerald}` }} />
+                <Box aria-hidden sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: colors.emerald, boxShadow: `0 0 10px ${colors.emerald}` }} />
                 <Typography className="mono" sx={{ fontSize: '0.78rem', color: colors.muted }}>
                   {profile.shortRole} @ {profile.company}
                 </Typography>

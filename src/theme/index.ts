@@ -10,7 +10,7 @@ export const colors = {
   borderStrong: 'rgba(240, 246, 252, 0.14)',
   text: '#e6edf3',
   muted: '#8b949e',
-  subtle: '#6e7681',
+  subtle: '#7d8590',
   emerald: '#34d399',
   sky: '#60a5fa',
   gradient: 'linear-gradient(90deg, #34d399 0%, #60a5fa 100%)',

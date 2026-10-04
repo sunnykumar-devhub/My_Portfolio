@@ -16,10 +16,14 @@ import { colors } from '../../theme';
 // Same order as focusAreas in the profile data
 const focusIcons = [DashboardOutlinedIcon, StorageOutlinedIcon, LockOutlinedIcon, SpeedOutlinedIcon];
 
-const About: React.FC = () => {
+const About: React.FC<{ standalone?: boolean }> = ({ standalone = false }) => {
   return (
-    <Section id="about">
-      <SectionHeading eyebrow="about" title="Turning complex workflows into interfaces that feel simple." />
+    <Section id="about" first={standalone}>
+      <SectionHeading
+        as={standalone ? 'h1' : 'h2'}
+        eyebrow="about"
+        title="Turning complex workflows into interfaces that feel simple."
+      />
 
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: { xs: 5, md: 8 } }}>
         <Reveal>
