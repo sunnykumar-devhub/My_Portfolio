@@ -10,13 +10,14 @@ import Surface from '../../Components/Common/Surface';
 import { skillGroups } from '../../data/profile';
 import { colors } from '../../theme';
 
-const Skills: React.FC = () => {
+const Skills: React.FC<{ standalone?: boolean }> = ({ standalone = false }) => {
   return (
-    <Section id="skills" alt>
+    <Section id="skills" alt first={standalone}>
       <SectionHeading
+        as={standalone ? 'h1' : 'h2'}
         eyebrow="skills"
         title="Tools I use every day"
-        subtitle="The stack behind the apps above, from the component layer down to payments and real-time."
+        subtitle="The stack behind my production work, from the component layer down to payments and real-time."
       />
 
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' }, gap: 2.5 }}>

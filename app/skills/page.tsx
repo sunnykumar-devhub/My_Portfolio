@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const SkillsPage = () => {
-  return <SkillsContainer />;
+  return <SkillsContainer standalone />;
 };
 
 export default SkillsPage;

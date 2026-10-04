@@ -7,9 +7,11 @@ type Props = {
   eyebrow: string;
   title: React.ReactNode;
   subtitle?: string;
+  // Render the title as the page's h1 (standalone pages) instead of a section h2
+  as?: 'h1' | 'h2';
 };
 
-const SectionHeading: React.FC<Props> = ({ eyebrow, title, subtitle }) => (
+const SectionHeading: React.FC<Props> = ({ eyebrow, title, subtitle, as = 'h2' }) => (
   <Reveal>
     <Box sx={{ mb: { xs: 5, md: 7 }, maxWidth: 720 }}>
       <Typography className="mono" sx={{ color: colors.emerald, fontSize: '0.85rem', mb: 1.5, letterSpacing: '0.04em' }}>
@@ -18,7 +20,7 @@ const SectionHeading: React.FC<Props> = ({ eyebrow, title, subtitle }) => (
         </Box>
         {eyebrow}
       </Typography>
-      <Typography variant="h2" sx={{ fontSize: { xs: '2rem', md: '2.75rem' }, lineHeight: 1.15, mb: subtitle ? 2 : 0 }}>
+      <Typography variant="h2" component={as} sx={{ fontSize: { xs: '2rem', md: '2.75rem' }, lineHeight: 1.15, mb: subtitle ? 2 : 0 }}>
         {title}
       </Typography>
       {subtitle && (

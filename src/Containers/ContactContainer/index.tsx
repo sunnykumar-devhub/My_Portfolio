@@ -83,7 +83,7 @@ const sendWithWeb3Forms = async (values: FormValues) => {
   if (!res.ok || !data.success) throw new Error(data.message || 'Request failed');
 };
 
-const Contact = () => {
+const Contact: React.FC<{ standalone?: boolean }> = ({ standalone = false }) => {
   const [values, setValues] = useState<FormValues>(EMPTY_FORM);
   const [notice, setNotice] = useState<Notice>(null);
   const [sending, setSending] = useState(false);
@@ -117,10 +117,11 @@ const Contact = () => {
   };
 
   return (
-    <Section id="contact" alt>
+    <Section id="contact" alt first={standalone}>
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '0.9fr 1.1fr' }, gap: { xs: 4, md: 8 } }}>
         <Box>
           <SectionHeading
+            as={standalone ? 'h1' : 'h2'}
             eyebrow="contact"
             title={
               <>

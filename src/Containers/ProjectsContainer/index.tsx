@@ -198,9 +198,10 @@ const ProjectGroup: React.FC<{ title: string; projects: Project[] }> = ({ title,
 
 const Projects: React.FC<{ full?: boolean }> = ({ full = false }) => {
   return (
-    <Section id="projects">
+    <Section id="projects" first={full}>
       <SectionHeading
-        eyebrow="work"
+        as={full ? 'h1' : 'h2'}
+        eyebrow="projects"
         title="Production apps I've built"
         subtitle="Enterprise applications I've delivered frontend features for at Codebucket, used by real brands, schools, government boards and citizens."
       />
