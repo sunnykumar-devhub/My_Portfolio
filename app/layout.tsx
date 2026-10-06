@@ -41,7 +41,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@sunnykumar_17',
     title: 'Sunny Kumar | Frontend Engineer',
     description: 'Frontend engineer (SDE-I) building role-based SaaS, EdTech and GovTech web apps with React, Next.js and TypeScript.',
     images: ['/og-image.png'],
