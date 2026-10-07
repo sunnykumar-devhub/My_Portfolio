@@ -28,7 +28,7 @@ const fieldSx = {
   },
 };
 
-const channels = (['email', 'linkedin', 'github'] as const).map(getSocialLink);
+const channels = (['email', 'linkedin', 'github', 'x'] as const).map(getSocialLink);
 
 const ChannelCard: React.FC<{ icon: React.ReactNode; label: string; value: string; href?: string }> = ({ icon, label, value, href }) => {
   const isExternal = href?.startsWith('http');
