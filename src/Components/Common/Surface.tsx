@@ -8,9 +8,10 @@ type SurfaceProps = BoxProps & {
 };
 
 // The bordered card used across every section, so spacing, radius and hover stay consistent
-const Surface: React.FC<SurfaceProps> = ({ interactive = false, sx, children, ...rest }) => (
+const Surface: React.FC<SurfaceProps> = ({ interactive = false, className, sx, children, ...rest }) => (
   <Box
     {...rest}
+    className={className ? `spotlight ${className}` : 'spotlight'}
     sx={[
       {
         height: '100%',

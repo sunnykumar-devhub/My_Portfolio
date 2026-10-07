@@ -7,6 +7,7 @@ import { Box, Container, Typography, Stack, Button } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DownloadIcon from '@mui/icons-material/FileDownloadOutlined';
 import SocialLinks from '../../Components/Common/SocialLinks';
+import CountUp from '../../Components/Common/CountUp';
 import { RESUME_URL } from '../../config/site';
 import { profile, stats } from '../../data/profile';
 import { colors } from '../../theme';
@@ -17,7 +18,32 @@ const fadeUp = (delay: number) => ({
   style: { animation: `fade-up 0.6s ease-out ${delay}s both` },
 });
 
-// Decorative "code editor" card next to the photo; hidden from screen readers since the same facts are in the text
+// Code card content as [class, text] tokens per line; the class picks the syntax colour
+type Token = [cls: '' | 'k' | 't' | 'v' | 's' | 'p', text: string];
+
+const codeLines: Token[][] = [
+  [['k', 'const'], ['', ' '], ['v', 'sunny'], ['', ': '], ['t', 'Engineer'], ['', ' = {']],
+  [['', '  '], ['p', 'role'], ['', ': '], ['s', '"SDE-I (Frontend)"'], ['', ',']],
+  [['', '  '], ['p', 'stack'], ['', ': ['], ['s', '"React"'], ['', ', '], ['s', '"Next.js"'], ['', ', '], ['s', '"TypeScript"'], ['', '],']],
+  [['', '  '], ['p', 'state'], ['', ': ['], ['s', '"Redux Toolkit"'], ['', ', '], ['s', '"RTK Query"'], ['', '],']],
+  [['', '  '], ['p', 'domains'], ['', ': ['], ['s', '"SaaS"'], ['', ', '], ['s', '"EdTech"'], ['', ', '], ['s', '"GovTech"'], ['', '],']],
+  [['', '};']],
+];
+
+// Seconds per typed character, and when typing starts (after the hero has faded in)
+const TYPE_SPEED = 0.022;
+const TYPE_START = 0.7;
+
+// Start time of each line, so every line begins typing when the previous one finishes
+const lineTiming = codeLines.reduce<{ len: number; delay: number }[]>((acc, line) => {
+  const len = line.reduce((n, [, text]) => n + text.length, 0);
+  const prev = acc[acc.length - 1];
+  const delay = prev ? prev.delay + prev.len * TYPE_SPEED : TYPE_START;
+  return [...acc, { len, delay }];
+}, []);
+
+// Decorative "code editor" card next to the photo, typed out line by line;
+// hidden from screen readers since the same facts are in the text
 const CodeCard: React.FC = () => (
   <Box
     aria-hidden
@@ -56,12 +82,45 @@ const CodeCard: React.FC = () => (
         '& .p': { color: '#79c0ff' },
       }}
     >
-      <span className="k">const</span> <span className="v">sunny</span>: <span className="t">Engineer</span> = {'{'}
-      {'\n'}  <span className="p">role</span>: <span className="s">&quot;SDE-I (Frontend)&quot;</span>,
-      {'\n'}  <span className="p">stack</span>: [<span className="s">&quot;React&quot;</span>, <span className="s">&quot;Next.js&quot;</span>, <span className="s">&quot;TypeScript&quot;</span>],
-      {'\n'}  <span className="p">state</span>: [<span className="s">&quot;Redux Toolkit&quot;</span>, <span className="s">&quot;RTK Query&quot;</span>],
-      {'\n'}  <span className="p">domains</span>: [<span className="s">&quot;SaaS&quot;</span>, <span className="s">&quot;EdTech&quot;</span>, <span className="s">&quot;GovTech&quot;</span>],
-      {'\n'}{'}'};
+      {codeLines.map((line, i) => {
+        const { len, delay } = lineTiming[i];
+        const isLast = i === codeLines.length - 1;
+        return (
+          <Box key={i} sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              component="span"
+              sx={{
+                display: 'block',
+                width: `${len}ch`,
+                overflow: 'hidden',
+                whiteSpace: 'pre',
+                // jump-start shows each character at the start of its step, so float rounding
+                // in the timing (progress ending at 0.9999…) can't drop the last character
+                animation: `typing ${len * TYPE_SPEED}s steps(${len}, jump-start) ${delay}s both`,
+              }}
+            >
+              {line.map(([cls, text], j) => (
+                <span key={j} className={cls || undefined}>
+                  {text}
+                </span>
+              ))}
+            </Box>
+            {isLast && (
+              <Box
+                component="span"
+                sx={{
+                  display: 'inline-block',
+                  width: '0.55em',
+                  height: '1.1em',
+                  ml: '2px',
+                  backgroundColor: colors.emerald,
+                  animation: 'blink 1s step-end infinite',
+                }}
+              />
+            )}
+          </Box>
+        );
+      })}
     </Box>
   </Box>
 );
@@ -90,6 +149,30 @@ const Hero: React.FC = () => {
         },
       }}
     >
+      {/* Slowly drifting aurora glows behind the content */}
+      {[
+        { color: colors.emerald, top: '-10%', left: '-8%', size: 520, duration: 18 },
+        { color: colors.sky, top: '10%', left: '55%', size: 560, duration: 24 },
+      ].map((orb) => (
+        <Box
+          key={orb.color}
+          aria-hidden
+          sx={{
+            position: 'absolute',
+            top: orb.top,
+            left: orb.left,
+            width: orb.size,
+            height: orb.size,
+            borderRadius: '50%',
+            background: orb.color,
+            opacity: 0.11,
+            filter: 'blur(110px)',
+            pointerEvents: 'none',
+            animation: `drift ${orb.duration}s ease-in-out infinite`,
+          }}
+        />
+      ))}
+
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
         <Box
           sx={{
@@ -116,7 +199,26 @@ const Hero: React.FC = () => {
                   backgroundColor: 'rgba(15, 19, 26, 0.8)',
                 }}
               >
-                <Box aria-hidden sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: colors.emerald, boxShadow: `0 0 10px ${colors.emerald}` }} />
+                <Box
+                  aria-hidden
+                  sx={{
+                    position: 'relative',
+                    width: 8,
+                    height: 8,
+                    borderRadius: '50%',
+                    backgroundColor: colors.emerald,
+                    boxShadow: `0 0 10px ${colors.emerald}`,
+                    // Expanding ring, like a "live" status light
+                    '&::after': {
+                      content: '""',
+                      position: 'absolute',
+                      inset: 0,
+                      borderRadius: '50%',
+                      backgroundColor: colors.emerald,
+                      animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+                    },
+                  }}
+                />
                 <Typography className="mono" sx={{ fontSize: '0.78rem', color: colors.muted }}>
                   {profile.shortRole} @ {profile.company}
                 </Typography>
@@ -130,7 +232,15 @@ const Hero: React.FC = () => {
               >
                 Hi, I&apos;m Sunny.
                 <br />
-                <Box component="span" className="text-gradient">
+                <Box
+                  component="span"
+                  className="text-gradient"
+                  sx={{
+                    backgroundImage: `linear-gradient(90deg, ${colors.emerald}, ${colors.sky}, ${colors.emerald})`,
+                    backgroundSize: '200% auto',
+                    animation: 'shimmer 6s linear infinite',
+                  }}
+                >
                   Frontend Engineer.
                 </Box>
               </Typography>
@@ -165,14 +275,24 @@ const Hero: React.FC = () => {
 
           {/* Right: photo + code card */}
           <div {...fadeUp(0.25)}>
-            <Box sx={{ position: 'relative', maxWidth: 420, mx: 'auto', pb: { xs: 10, sm: 12 } }}>
+            <Box
+              sx={{
+                position: 'relative',
+                maxWidth: 420,
+                mx: 'auto',
+                pb: { xs: 10, sm: 12 },
+                animation: 'float 7s ease-in-out infinite',
+              }}
+            >
               <Box
                 sx={{
                   position: 'relative',
                   borderRadius: '24px',
                   p: '2px',
-                  background: colors.gradient,
-                  boxShadow: '0 30px 80px rgba(52, 211, 153, 0.12)',
+                  // Rotating gradient ring; browsers without @property show it as a still gradient
+                  background: `conic-gradient(from var(--angle), rgba(52, 211, 153, 0.2), ${colors.emerald} 25%, ${colors.sky} 50%, rgba(96, 165, 250, 0.2) 75%, rgba(52, 211, 153, 0.2))`,
+                  animation: 'spin-angle 6s linear infinite',
+                  boxShadow: '0 30px 80px rgba(52, 211, 153, 0.14)',
                 }}
               >
                 <Box sx={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: '22px', overflow: 'hidden', backgroundColor: colors.surface }}>
@@ -217,7 +337,7 @@ const Hero: React.FC = () => {
                 }}
               >
                 <Typography sx={{ fontSize: { xs: '1.4rem', md: '1.75rem' }, fontWeight: 800, letterSpacing: '-0.02em', mb: 0.5 }}>
-                  {s.value}
+                  <CountUp value={s.value} />
                 </Typography>
                 <Typography sx={{ color: colors.muted, fontSize: '0.85rem', lineHeight: 1.4 }}>{s.label}</Typography>
               </Box>

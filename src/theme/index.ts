@@ -43,9 +43,25 @@ export const darkTheme = createTheme({
         root: { borderRadius: 10, paddingInline: 20, paddingBlock: 10 },
         contained: {
           '&.MuiButton-colorPrimary': {
+            position: 'relative',
+            overflow: 'hidden',
             background: colors.gradient,
             color: '#04130d',
-            '&:hover': { background: colors.gradient, filter: 'brightness(1.08)' },
+            boxShadow: '0 8px 24px rgba(52, 211, 153, 0.18)',
+            '&:hover': { background: colors.gradient, filter: 'brightness(1.08)', boxShadow: '0 10px 30px rgba(52, 211, 153, 0.3)' },
+            // Light sweep across the button on hover
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: '-60%',
+              width: '40%',
+              height: '100%',
+              background: 'linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent)',
+              transform: 'skewX(-20deg)',
+              transition: 'left .6s ease',
+            },
+            '&:hover::after': { left: '130%' },
           },
         },
         outlined: {
