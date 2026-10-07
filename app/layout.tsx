@@ -8,6 +8,7 @@ import Header from '../src/Components/Layout/Header';
 import Footer from '../src/Components/Layout/Footer';
 import ScrollProgress from '../src/Components/Layout/ScrollProgress';
 import BackToTop from '../src/Components/Layout/BackToTop';
+import SpotlightTracker from '../src/Components/Layout/SpotlightTracker';
 import { personJsonLd } from '../src/lib/structuredData';
 import './globals.css';
 
@@ -73,6 +74,7 @@ const RootLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <Footer />
           </Box>
           <BackToTop />
+          <SpotlightTracker />
         </Providers>
       </body>
     </html>
