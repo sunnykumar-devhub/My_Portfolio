@@ -16,7 +16,7 @@ export const profile = {
   ],
 };
 
-export type SocialId = 'github' | 'linkedin' | 'email';
+export type SocialId = 'github' | 'linkedin' | 'x' | 'email';
 
 export type SocialLink = {
   id: SocialId;
@@ -28,6 +28,7 @@ export type SocialLink = {
 export const socialLinks: SocialLink[] = [
   { id: 'github', label: 'GitHub', handle: 'sunnykumar-devhub', href: 'https://github.com/sunnykumar-devhub' },
   { id: 'linkedin', label: 'LinkedIn', handle: 'in/sunnykumar-devhub', href: 'https://www.linkedin.com/in/sunnykumar-devhub' },
+  { id: 'x', label: 'X', handle: '@thesunnyk', href: 'https://x.com/thesunnyk' },
   { id: 'email', label: 'Email', handle: profile.email, href: `mailto:${profile.email}` },
 ];
 
