@@ -1,78 +1,96 @@
 import { createTheme } from '@mui/material';
 
-// Palette matches the LinkedIn banner: charcoal background, emerald → sky accent
+// Restrained dark palette: warm charcoal surfaces, warm off-white text and a single emerald accent
+// (the emerald of the SK app icon). Mirrored as CSS variables in app/globals.css.
 export const colors = {
-  bg: '#07090d',
-  bgAlt: '#0b0e14',
-  surface: '#0f131a',
-  surfaceHover: '#141922',
-  border: 'rgba(240, 246, 252, 0.08)',
-  borderStrong: 'rgba(240, 246, 252, 0.14)',
-  text: '#e6edf3',
-  muted: '#8b949e',
-  subtle: '#7d8590',
-  emerald: '#34d399',
-  sky: '#60a5fa',
-  gradient: 'linear-gradient(90deg, #34d399 0%, #60a5fa 100%)',
+  bg: '#111213',
+  bgAlt: '#151618',
+  surface: '#1a1b1e',
+  surfaceHover: '#202125',
+  border: 'rgba(237, 232, 223, 0.09)',
+  borderStrong: 'rgba(237, 232, 223, 0.16)',
+  text: '#ede8df',
+  muted: '#aaa59c',
+  subtle: '#8b877f',
+  accent: '#34d399',
+  accentSoft: 'rgba(52, 211, 153, 0.1)',
+  onAccent: '#06140e',
 };
 
-export const darkTheme = createTheme({
+export const fonts = {
+  sans: 'var(--font-sans), "Helvetica Neue", Arial, sans-serif',
+  mono: 'var(--font-mono), ui-monospace, Menlo, monospace',
+  serif: 'var(--font-serif), Georgia, serif',
+};
+
+export const theme = createTheme({
   palette: {
     mode: 'dark',
-    primary: { main: colors.emerald, contrastText: '#04130d' },
-    secondary: { main: colors.sky },
+    primary: { main: colors.accent, contrastText: colors.onAccent },
     background: { default: colors.bg, paper: colors.surface },
     text: { primary: colors.text, secondary: colors.muted },
     divider: colors.border,
   },
-  shape: { borderRadius: 12 },
+  shape: { borderRadius: 10 },
   typography: {
-    fontFamily: 'var(--font-inter), "Helvetica Neue", Arial, sans-serif',
-    h1: { fontWeight: 800, letterSpacing: '-0.035em' },
-    h2: { fontWeight: 700, letterSpacing: '-0.03em' },
-    h3: { fontWeight: 700, letterSpacing: '-0.02em' },
-    h4: { fontWeight: 700, letterSpacing: '-0.02em' },
-    h5: { fontWeight: 600, letterSpacing: '-0.01em' },
+    fontFamily: fonts.sans,
+    h1: { fontWeight: 600, letterSpacing: '-0.04em' },
+    h2: { fontWeight: 600, letterSpacing: '-0.035em' },
+    h3: { fontWeight: 600, letterSpacing: '-0.02em' },
+    h4: { fontWeight: 600, letterSpacing: '-0.015em' },
+    h5: { fontWeight: 600 },
     h6: { fontWeight: 600 },
-    button: { textTransform: 'none', fontWeight: 600 },
+    button: { textTransform: 'none', fontWeight: 500, letterSpacing: 0 },
   },
   components: {
+    MuiButtonBase: {
+      // The global :focus-visible outline in globals.css replaces the ripple as the focus indicator
+      defaultProps: { disableRipple: true },
+    },
     MuiButton: {
       defaultProps: { disableElevation: true },
       styleOverrides: {
-        root: { borderRadius: 10, paddingInline: 20, paddingBlock: 10 },
+        root: {
+          borderRadius: 999,
+          paddingInline: 20,
+          paddingBlock: 9,
+          fontSize: '0.95rem',
+          transition: 'background-color .2s, border-color .2s, color .2s, transform .2s',
+          '& .MuiButton-endIcon': { transition: 'transform .2s' },
+          '&:hover .MuiButton-endIcon': { transform: 'translateX(3px)' },
+        },
+        sizeLarge: { paddingInline: 24, paddingBlock: 11, fontSize: '1rem' },
+        sizeSmall: { paddingInline: 14, paddingBlock: 5, fontSize: '0.85rem' },
         contained: {
           '&.MuiButton-colorPrimary': {
-            position: 'relative',
-            overflow: 'hidden',
-            background: colors.gradient,
-            color: '#04130d',
-            boxShadow: '0 8px 24px rgba(52, 211, 153, 0.18)',
-            '&:hover': { background: colors.gradient, filter: 'brightness(1.08)', boxShadow: '0 10px 30px rgba(52, 211, 153, 0.3)' },
-            // Light sweep across the button on hover
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: '-60%',
-              width: '40%',
-              height: '100%',
-              background: 'linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.45), transparent)',
-              transform: 'skewX(-20deg)',
-              transition: 'left .6s ease',
-            },
-            '&:hover::after': { left: '130%' },
+            backgroundColor: colors.accent,
+            color: colors.onAccent,
+            '&:hover': { backgroundColor: '#5ee0ab' },
           },
         },
         outlined: {
           borderColor: colors.borderStrong,
           color: colors.text,
-          '&:hover': { borderColor: colors.emerald, backgroundColor: 'rgba(52, 211, 153, 0.06)' },
+          '&:hover': { borderColor: colors.text, backgroundColor: 'transparent' },
         },
+        text: {
+          color: colors.muted,
+          '&:hover': { color: colors.text, backgroundColor: 'transparent' },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: { transition: 'color .2s, background-color .2s, border-color .2s' },
       },
     },
     MuiPaper: {
       styleOverrides: { root: { backgroundImage: 'none' } },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: { backgroundColor: colors.text, color: colors.bg, fontSize: '0.78rem', fontWeight: 500 },
+      },
     },
   },
 });

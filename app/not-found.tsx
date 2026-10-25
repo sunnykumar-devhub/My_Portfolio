@@ -1,9 +1,7 @@
-'use client';
-
 import React from 'react';
-import Link from 'next/link';
-import { Box, Container, Typography, Button } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LinkButton from '../src/Components/Common/LinkButton';
 
 const NotFound: React.FC = () => {
   return (
@@ -18,9 +16,9 @@ const NotFound: React.FC = () => {
         <Typography sx={{ color: 'text.secondary', mb: 5 }}>
           The link may be broken, or the page may have moved.
         </Typography>
-        <Button component={Link} href="/" variant="contained" color="primary" startIcon={<ArrowBackIcon />}>
+        <LinkButton href="/" variant="contained" color="primary" startIcon={<ArrowBackIcon />}>
           Back to home
-        </Button>
+        </LinkButton>
       </Container>
     </Box>
   );
