@@ -1,208 +1,124 @@
-'use client';
-
-import React, { useState } from 'react';
-import { Box, Typography, Snackbar, Alert, TextField, Button, Stack } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import React from 'react';
+import { Box, Typography } from '@mui/material';
+import NorthEastIcon from '@mui/icons-material/NorthEast';
+import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import Section from '../../Components/Common/Section';
 import SectionHeading from '../../Components/Common/SectionHeading';
 import Reveal from '../../Components/Common/Reveal';
-import Surface from '../../Components/Common/Surface';
-import SocialIcon from '../../Components/Common/SocialIcon';
-import { CONTACT_EMAIL, WEB3FORMS_KEY } from '../../config/site';
-import { getSocialLink, profile } from '../../data/profile';
+import LocalTime from '../../Components/Common/LocalTime';
+import CopyEmailButton from './CopyEmailButton';
+import ContactForm from './ContactForm';
+import { RESUME_FILENAME, RESUME_URL, WEB3FORMS_KEY } from '../../config/site';
+import { getSocialLink } from '../../data/profile';
 import { colors } from '../../theme';
 
-type FormValues = { name: string; email: string; message: string };
-type Notice = { message: string; severity: 'success' | 'error' } | null;
-
-const EMPTY_FORM: FormValues = { name: '', email: '', message: '' };
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const fieldSx = {
-  '& .MuiOutlinedInput-root': {
-    backgroundColor: colors.bg,
-    '& fieldset': { borderColor: colors.border },
-    '&:hover fieldset': { borderColor: colors.borderStrong },
-    '&.Mui-focused fieldset': { borderColor: colors.emerald },
-  },
+type Row = {
+  label: string;
+  value: string;
+  href: string;
+  external?: boolean;
+  download?: string;
+  action?: React.ReactNode;
 };
 
-const channels = (['email', 'linkedin', 'github', 'x'] as const).map(getSocialLink);
+const email = getSocialLink('email');
+const linkedin = getSocialLink('linkedin');
+const github = getSocialLink('github');
 
-const ChannelCard: React.FC<{ icon: React.ReactNode; label: string; value: string; href?: string }> = ({ icon, label, value, href }) => {
-  const isExternal = href?.startsWith('http');
+const rows: Row[] = [
+  { label: 'Email', value: email.handle, href: email.href, action: <CopyEmailButton /> },
+  { label: 'LinkedIn', value: linkedin.handle, href: linkedin.href, external: true },
+  { label: 'GitHub', value: github.handle, href: github.href, external: true },
+  ...(RESUME_URL ? [{ label: 'Resume', value: 'Download PDF', href: RESUME_URL, download: RESUME_FILENAME }] : []),
+];
+
+const ContactRow: React.FC<{ row: Row }> = ({ row }) => {
+  const Icon = row.download ? FileDownloadOutlinedIcon : NorthEastIcon;
   return (
-    <Surface
-      {...(href && {
-        component: 'a',
-        href,
-        target: isExternal ? '_blank' : undefined,
-        rel: isExternal ? 'noopener noreferrer' : undefined,
-      })}
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 2,
-        p: 2,
-        borderRadius: '12px',
-        color: colors.text,
-        textDecoration: 'none',
-        transition: 'border-color .2s',
-        ...(href && { '&:hover': { borderColor: 'rgba(52, 211, 153, 0.45)' } }),
-      }}
-    >
-      <Box sx={{ color: colors.emerald, display: 'grid', placeItems: 'center' }}>{icon}</Box>
-      <Box sx={{ minWidth: 0 }}>
-        <Typography sx={{ fontSize: '0.78rem', color: colors.subtle }}>{label}</Typography>
-        <Typography sx={{ fontSize: '0.95rem', overflowWrap: 'anywhere' }}>{value}</Typography>
+    <Box component="li" sx={{ display: 'flex', alignItems: 'center', gap: 2, borderBottom: `1px solid ${colors.border}` }}>
+      <Box
+        component="a"
+        href={row.href}
+        download={row.download}
+        target={row.external ? '_blank' : undefined}
+        rel={row.external ? 'noopener noreferrer' : undefined}
+        // No aria-label: the visible label and value are the link's name, so voice-control users can say what they see
+        sx={{
+          flex: 1,
+          minWidth: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 2,
+          py: { xs: 2.5, md: 3 },
+          color: colors.text,
+          textDecoration: 'none',
+          '& .contact-icon': { transition: 'transform .2s, color .2s', color: colors.subtle },
+          '&:hover .contact-icon': { color: colors.accent, transform: row.download ? 'translateY(2px)' : 'translate(2px, -2px)' },
+          '&:hover .contact-value': { color: colors.accent },
+        }}
+      >
+        <Box sx={{ minWidth: 0 }}>
+          <Typography className="mono" sx={{ fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: colors.subtle, mb: 0.5 }}>
+            {row.label}
+          </Typography>
+          <Typography
+            className="contact-value"
+            sx={{ fontSize: { xs: '1.1rem', md: '1.35rem' }, fontWeight: 500, letterSpacing: '-0.02em', overflowWrap: 'anywhere', transition: 'color .2s' }}
+          >
+            {row.value}
+            {row.external && <span className="visually-hidden"> (opens in a new tab)</span>}
+          </Typography>
+        </Box>
+        <Icon className="contact-icon" aria-hidden />
       </Box>
-    </Surface>
+      {row.action}
+    </Box>
   );
 };
 
-// Opens the visitor's mail client with the message prefilled; used when no form service key is configured
-const openMailClient = ({ name, email, message }: FormValues) => {
-  const subject = encodeURIComponent(`Portfolio message from ${name}`);
-  const body = encodeURIComponent(`${message}\n\n${name} (${email})`);
-  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-};
-
-const sendWithWeb3Forms = async (values: FormValues) => {
-  const res = await fetch('https://api.web3forms.com/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify({
-      access_key: WEB3FORMS_KEY,
-      subject: `Portfolio message from ${values.name}`,
-      from_name: values.name,
-      ...values,
-    }),
-  });
-  const data = await res.json();
-  if (!res.ok || !data.success) throw new Error(data.message || 'Request failed');
-};
-
 const Contact: React.FC<{ standalone?: boolean }> = ({ standalone = false }) => {
-  const [values, setValues] = useState<FormValues>(EMPTY_FORM);
-  const [notice, setNotice] = useState<Notice>(null);
-  const [sending, setSending] = useState(false);
-
-  const emailInvalid = values.email !== '' && !EMAIL_PATTERN.test(values.email);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setValues((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (emailInvalid) return;
-
-    if (!WEB3FORMS_KEY) {
-      openMailClient(values);
-      return;
-    }
-
-    setSending(true);
-    try {
-      await sendWithWeb3Forms(values);
-      setNotice({ message: 'Thank you for reaching out! I will get back to you soon.', severity: 'success' });
-      setValues(EMPTY_FORM);
-    } catch {
-      setNotice({ message: `Sorry, your message could not be sent. Please email me at ${CONTACT_EMAIL}.`, severity: 'error' });
-    } finally {
-      setSending(false);
-    }
-  };
+  const hasForm = Boolean(WEB3FORMS_KEY);
 
   return (
-    <Section id="contact" alt first={standalone}>
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '0.9fr 1.1fr' }, gap: { xs: 4, md: 8 } }}>
-        <Box>
+    <Section id="contact" first={standalone}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'minmax(0, 5fr) minmax(0, 6fr)' },
+          gap: { xs: 2, md: 10 },
+        }}
+      >
+        <div>
           <SectionHeading
             as={standalone ? 'h1' : 'h2'}
-            eyebrow="contact"
+            eyebrow="Contact"
             title={
               <>
-                Let&apos;s build something <Box component="span" className="text-gradient">great</Box>.
+                Hiring for a frontend role? <span className="serif">Let&apos;s talk.</span>
               </>
             }
-            subtitle="Hiring for a frontend role, or want to talk React, Next.js or dashboards? My inbox is open."
+            subtitle={
+              <>
+                Email is the quickest way to reach me. I&apos;m based in Patna, India (local time{' '}
+                <Box component="span" sx={{ color: colors.text }}>
+                  <LocalTime />
+                </Box>
+                ).
+              </>
+            }
           />
-          <Reveal>
-            <Stack spacing={1.5}>
-              {channels.map((link) => (
-                <ChannelCard key={link.id} icon={<SocialIcon id={link.id} />} label={link.label} value={link.handle} href={link.href} />
-              ))}
-              <ChannelCard icon={<PlaceOutlinedIcon fontSize="small" />} label="Location" value={profile.location} />
-            </Stack>
-          </Reveal>
-        </Box>
+        </div>
 
         <Reveal delay={0.1}>
-          <Surface
-            component="form"
-            onSubmit={handleSubmit}
-            aria-labelledby="contact-form-title"
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, borderRadius: '20px', height: 'auto' }}
-          >
-            <Typography id="contact-form-title" variant="h3" sx={{ fontSize: '1.4rem', mb: 0.5 }}>
-              Send a message
-            </Typography>
-            <TextField label="Your name" name="name" autoComplete="name" value={values.name} onChange={handleChange} fullWidth required sx={fieldSx} />
-            <TextField
-              label="Your email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              value={values.email}
-              onChange={handleChange}
-              fullWidth
-              required
-              error={emailInvalid}
-              helperText={emailInvalid ? 'Enter a valid email address' : ' '}
-              sx={fieldSx}
-            />
-            <TextField
-              label="Message"
-              name="message"
-              value={values.message}
-              onChange={handleChange}
-              placeholder="Tell me about the role or project"
-              fullWidth
-              multiline
-              rows={5}
-              required
-              sx={fieldSx}
-            />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-              endIcon={<SendIcon />}
-              disabled={sending || emailInvalid || !values.name.trim() || !values.message.trim()}
-              sx={{ py: 1.4 }}
-            >
-              {sending ? 'Sending...' : 'Send message'}
-            </Button>
-          </Surface>
+          <Box component="ul" sx={{ listStyle: 'none', borderTop: `1px solid ${colors.border}`, mb: hasForm ? 6 : 0 }}>
+            {rows.map((row) => (
+              <ContactRow key={row.label} row={row} />
+            ))}
+          </Box>
+          {hasForm && <ContactForm level={standalone ? 'h2' : 'h3'} />}
         </Reveal>
       </Box>
-
-      <Snackbar
-        open={notice !== null}
-        autoHideDuration={6000}
-        onClose={() => setNotice(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        {notice ? (
-          <Alert onClose={() => setNotice(null)} severity={notice.severity} variant="filled" sx={{ width: '100%', fontWeight: 600 }}>
-            {notice.message}
-          </Alert>
-        ) : undefined}
-      </Snackbar>
     </Section>
   );
 };

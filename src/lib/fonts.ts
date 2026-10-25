@@ -1,16 +1,23 @@
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Instrument_Serif } from 'next/font/google';
 
 // Self-hosted by Next (downloaded at build time, no runtime request to Google Fonts)
-export const inter = Inter({
+export const sans = Geist({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-inter',
+  variable: '--font-sans',
   display: 'swap',
 });
 
-export const mono = JetBrains_Mono({
+export const mono = Geist_Mono({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
   variable: '--font-mono',
+  display: 'swap',
+});
+
+// Italic serif for the few emphasised words in headings
+export const serif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: 'italic',
+  variable: '--font-serif',
   display: 'swap',
 });

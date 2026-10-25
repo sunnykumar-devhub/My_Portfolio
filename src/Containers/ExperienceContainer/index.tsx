@@ -1,11 +1,8 @@
-'use client';
-
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import Section from '../../Components/Common/Section';
 import SectionHeading from '../../Components/Common/SectionHeading';
 import Reveal from '../../Components/Common/Reveal';
-import Surface from '../../Components/Common/Surface';
 import BulletList from '../../Components/Common/BulletList';
 import { experience } from '../../data/profile';
 import { colors } from '../../theme';
@@ -14,65 +11,84 @@ const Experience: React.FC = () => {
   return (
     <Section id="experience" alt>
       <SectionHeading
-        eyebrow="experience"
-        title="Where I've worked"
-        subtitle="Joined Codebucket Solutions as an intern and was promoted to SDE-I after 9 months."
+        eyebrow="Experience"
+        title={
+          <>
+            Intern to SDE-I in <span className="serif">nine months</span>
+          </>
+        }
+        subtitle="Both roles at Codebucket Solutions in Patna, building frontends for enterprise products."
       />
 
-      <Box component="ol" sx={{ position: 'relative', listStyle: 'none', pl: { xs: 3.5, md: 5 }, display: 'grid', gap: 4 }}>
-        {/* Timeline rail */}
-        <Box
-          aria-hidden
-          sx={{
-            position: 'absolute',
-            left: { xs: 7, md: 11 },
-            top: 8,
-            bottom: 8,
-            width: '2px',
-            background: `linear-gradient(to bottom, ${colors.emerald}, ${colors.sky} 60%, transparent)`,
-            opacity: 0.5,
-          }}
-        />
-
+      <Box component="ol" sx={{ listStyle: 'none' }}>
         {experience.map((role, i) => {
-          const isCurrent = i === 0;
+          const isCurrent = !role.end;
+          const isLast = i === experience.length - 1;
           return (
-            <Box component="li" key={role.title} sx={{ position: 'relative' }}>
-              <Reveal delay={i * 0.1}>
+            <Box
+              component="li"
+              key={role.title}
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '16px minmax(0, 1fr)', md: 'minmax(0, 3fr) 16px minmax(0, 8fr)' },
+                columnGap: { xs: 2.5, md: 4 },
+              }}
+            >
+              {/* Dates: own column on desktop, above the title on mobile */}
+              <Box sx={{ display: { xs: 'none', md: 'block' }, pt: 0.5 }}>
+                <DateBlock period={role.period} start={role.start} end={role.end} />
+                <Typography sx={{ color: colors.subtle, fontSize: '0.88rem', mt: 0.75 }}>
+                  {role.type} · {role.location}
+                </Typography>
+              </Box>
+
+              {/* Timeline rail and marker */}
+              <Box aria-hidden sx={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+                {!isLast && <Box sx={{ position: 'absolute', top: 14, bottom: 0, width: '1px', backgroundColor: colors.borderStrong }} />}
                 <Box
-                  aria-hidden
                   sx={{
-                    position: 'absolute',
-                    left: { xs: -34, md: -46 },
-                    top: 26,
-                    width: 16,
-                    height: 16,
+                    position: 'relative',
+                    mt: 0.75,
+                    width: 11,
+                    height: 11,
                     borderRadius: '50%',
-                    backgroundColor: colors.bgAlt,
-                    border: `3px solid ${isCurrent ? colors.emerald : colors.sky}`,
-                    boxShadow: isCurrent ? `0 0 14px ${colors.emerald}` : 'none',
+                    backgroundColor: isCurrent ? colors.accent : colors.bgAlt,
+                    border: `1px solid ${isCurrent ? colors.accent : colors.subtle}`,
+                    boxShadow: `0 0 0 5px ${colors.bgAlt}`,
                   }}
                 />
-                <Surface>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'baseline', gap: 1, mb: 0.5 }}>
-                    <Typography variant="h3" sx={{ fontSize: { xs: '1.15rem', md: '1.35rem' } }}>
-                      {role.title}
-                    </Typography>
-                    <Typography className="mono" sx={{ fontSize: '0.82rem', color: colors.emerald }}>
-                      {role.period}
-                    </Typography>
+              </Box>
+
+              <Reveal style={{ paddingBottom: isLast ? 0 : 56 }}>
+                <Box sx={{ display: { md: 'none' }, mb: 1 }}>
+                  <DateBlock period={role.period} start={role.start} end={role.end} />
+                </Box>
+                <Typography variant="h3" sx={{ fontSize: { xs: '1.3rem', md: '1.5rem' }, mb: 0.5 }}>
+                  {role.title}
+                </Typography>
+                <Typography sx={{ color: colors.muted, mb: 2.5 }}>
+                  {role.company}
+                  <Box component="span" sx={{ display: { md: 'none' } }}>
+                    {' '}
+                    · {role.type}
                   </Box>
-                  <Typography sx={{ color: colors.muted, mb: 2.5, fontSize: '0.95rem' }}>
-                    {role.company} · {role.location} · {role.type}
-                  </Typography>
-                  <BulletList items={role.points} />
-                </Surface>
+                </Typography>
+                <BulletList items={role.points} />
               </Reveal>
             </Box>
           );
         })}
       </Box>
     </Section>
+  );
+};
+
+const DateBlock: React.FC<{ period: string; start: string; end?: string }> = ({ period, start, end }) => {
+  const [from, to] = period.split(' – ');
+  return (
+    <Typography className="mono" sx={{ fontSize: '0.85rem', color: end ? colors.muted : colors.accent }}>
+      <time dateTime={start}>{from}</time> – {end ? <time dateTime={end}>{to}</time> : to}
+    </Typography>
   );
 };
 

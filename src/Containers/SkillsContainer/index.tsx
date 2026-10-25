@@ -1,40 +1,52 @@
-'use client';
-
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import Section from '../../Components/Common/Section';
 import SectionHeading from '../../Components/Common/SectionHeading';
 import Reveal from '../../Components/Common/Reveal';
-import TechChip from '../../Components/Common/TechChip';
-import Surface from '../../Components/Common/Surface';
 import { skillGroups } from '../../data/profile';
 import { colors } from '../../theme';
 
 const Skills: React.FC<{ standalone?: boolean }> = ({ standalone = false }) => {
   return (
-    <Section id="skills" alt first={standalone}>
+    <Section id="skills" first={standalone}>
       <SectionHeading
         as={standalone ? 'h1' : 'h2'}
-        eyebrow="skills"
-        title="Tools I use every day"
-        subtitle="The stack behind my production work, from the component layer down to payments and real-time."
+        eyebrow="Skills"
+        title={
+          <>
+            The stack I work in <span className="serif">every day</span>
+          </>
+        }
+        subtitle="Grouped by where each one shows up in my work. Everything listed is used in production apps or in my public projects."
       />
 
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, 1fr)' }, gap: 2.5 }}>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: 'minmax(0, 1fr)', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(4, minmax(0, 1fr))' },
+          columnGap: { sm: 4, md: 5 },
+          rowGap: 6,
+        }}
+      >
         {skillGroups.map((group, i) => (
-          <Reveal key={group.title} delay={(i % 3) * 0.08} style={{ height: '100%' }}>
-            <Surface sx={{ p: 3, borderRadius: '16px' }}>
-              <Typography variant="h3" className="mono" sx={{ fontSize: '0.8rem', fontWeight: 500, letterSpacing: 0, color: colors.emerald, mb: 2 }}>
-                {group.title.toLowerCase()}
+          <Reveal key={group.title} delay={i * 0.06}>
+            <Box sx={{ borderTop: `1px solid ${colors.accent}`, pt: 2.5 }}>
+              <Typography variant="h3" component={standalone ? 'h2' : 'h3'} sx={{ fontSize: '1.05rem', mb: 2 }}>
+                {group.title}
               </Typography>
-              <Box component="ul" sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, listStyle: 'none' }}>
+              {/* Two columns per group on phones, where the groups stack */}
+              <Box component="ul" sx={{ listStyle: 'none', display: 'grid', gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', sm: 'minmax(0, 1fr)' }, columnGap: 2 }}>
                 {group.skills.map((skill) => (
-                  <li key={skill}>
-                    <TechChip label={skill} />
-                  </li>
+                  <Box
+                    component="li"
+                    key={skill}
+                    sx={{ py: 1.1, color: colors.muted, fontSize: '0.95rem', borderBottom: `1px solid ${colors.border}` }}
+                  >
+                    {skill}
+                  </Box>
                 ))}
               </Box>
-            </Surface>
+            </Box>
           </Reveal>
         ))}
       </Box>
